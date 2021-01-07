@@ -36,7 +36,8 @@ namespace StarGate
         {
             // TODO: Add your initialization logic here
             terrain = new Terrain(800, 400);
-
+            terrain.GenerateTerrain();
+            
             base.Initialize();
         }
 
@@ -73,6 +74,7 @@ namespace StarGate
                 this.Exit();
 
             // TODO: Add your update logic here
+            
 
             base.Update(gameTime);
         }
@@ -86,6 +88,11 @@ namespace StarGate
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

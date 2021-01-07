@@ -7,17 +7,19 @@ namespace StarGate
 {
     class Terrain
     {
-        private int[] terrainContour;
+        public int[] terrainContour;
         private Random random;
         private int width;
         private int height;
 
         public Terrain(int width, int height)
         {
-            random = new Random();
+            this.random = new Random();
+            this.width = width;
+            this.height = height;
         }
 
-        private void GenerateTerrain()
+        public void GenerateTerrain()
         {
             terrainContour = new int[width * height];
 
@@ -43,10 +45,8 @@ namespace StarGate
                 height += offset;
 
                 terrainContour[x] = (int)height;
+                Console.WriteLine(height);
             }
-        }
-
-            return noise;
         }
     }
 }
