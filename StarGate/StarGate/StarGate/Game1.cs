@@ -19,6 +19,10 @@ namespace StarGate
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         spaceShip ship;
+        private Terrain terrain;
+
+        TitleScreen titleScreen;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,7 +38,10 @@ namespace StarGate
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            titleScreen = new TitleScreen(graphics);
+            terrain = new Terrain(800, 400);
+            terrain.GenerateTerrain();
+            
             base.Initialize();
         }
 
@@ -48,7 +55,8 @@ namespace StarGate
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-           ship = new spaceShip(Content.Load<Texture2D>("starGateAllSprites"));
+            ship = new spaceShip(Content.Load<Texture2D>("starGateAllSprites"));
+            titleScreen.loadTitleScreenImage(this);
         }
 
         /// <summary>
@@ -72,6 +80,7 @@ namespace StarGate
                 this.Exit();
 
             // TODO: Add your update logic here
+            titleScreen.Update();
 
             base.Update(gameTime);
         }
@@ -82,11 +91,14 @@ namespace StarGate
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
             ship.Draw(spriteBatch);
+            titleScreen.Draw(spriteBatch);
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
