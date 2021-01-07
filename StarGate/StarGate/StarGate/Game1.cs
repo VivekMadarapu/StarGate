@@ -18,6 +18,7 @@ namespace StarGate
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        spaceShip ship;
         private Terrain terrain;
 
         TitleScreen titleScreen;
@@ -54,6 +55,7 @@ namespace StarGate
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            ship = new spaceShip(Content.Load<Texture2D>("starGateAllSprites"));
             titleScreen.loadTitleScreenImage(this);
         }
 
@@ -94,8 +96,9 @@ namespace StarGate
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
+            ship.Draw(spriteBatch);
             titleScreen.Draw(spriteBatch);
-
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
