@@ -18,6 +18,7 @@ namespace StarGate
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Terrain terrain;
 
         TitleScreen titleScreen;
 
@@ -37,6 +38,7 @@ namespace StarGate
         {
             // TODO: Add your initialization logic here
             titleScreen = new TitleScreen(graphics);
+            terrain = new Terrain(800, 400);
 
             base.Initialize();
         }
