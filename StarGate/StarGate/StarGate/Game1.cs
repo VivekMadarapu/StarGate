@@ -39,7 +39,8 @@ namespace StarGate
             // TODO: Add your initialization logic here
             titleScreen = new TitleScreen(graphics);
             terrain = new Terrain(800, 400);
-
+            terrain.GenerateTerrain();
+            
             base.Initialize();
         }
 
@@ -92,7 +93,9 @@ namespace StarGate
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
             titleScreen.Draw(spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
