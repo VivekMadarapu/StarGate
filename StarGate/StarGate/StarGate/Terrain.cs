@@ -7,20 +7,47 @@ namespace StarGate
 {
     class Terrain
     {
-        float[,] GenerateWhiteNoise(int width, int height)
+        private int[] terrainContour;
+        private Random random;
+        private int width;
+        private int height;
+
+        public Terrain(int width, int height)
         {
-            Random random = new Random(0); //Seed to 0 for testing
-            float[,] noise = new float[width, height];
-
-            for (int i = 0; i < width; i++)
-            {
-                for (int j = 0; j < height; j++)
-                {
-                    noise[i, j] = (float)random.NextDouble() % 1;
-                }
-            }
-
-            return noise;
+            random = new Random();
         }
+
+        private void GenerateTerrain()
+        {
+            terrainContour = new int[width * height];
+
+            //Make Random Numbers
+            double rand1 = random.NextDouble() + 1;
+            double rand2 = random.NextDouble() + 2;
+            double rand3 = random.NextDouble() + 3;
+
+            //Variables, Play with these for unique results!
+            float peakheight = 20;
+            float flatness = 50;
+            int offset = 30;
+
+
+            //Generate basic terrain sine
+            for (int x = 0; x < width; x++)
+            {
+
+                double height = peakheight / rand1 * Math.Sin((float)x / flatness * rand1 + rand1);
+                height += peakheight / rand2 * Math.Sin((float)x / flatness * rand2 + rand2);
+                height += peakheight / rand3 * Math.Sin((float)x / flatness * rand3 + rand3);
+
+                height += offset;
+
+                terrainContour[x] = (int)height;
+            }
+        }
+
+
+
+
     }
 }

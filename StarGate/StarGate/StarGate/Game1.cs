@@ -18,6 +18,7 @@ namespace StarGate
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Terrain terrain;
 
         public Game1()
         {
@@ -34,6 +35,7 @@ namespace StarGate
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            terrain = new Terrain(800, 400);
 
             base.Initialize();
         }
