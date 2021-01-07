@@ -20,7 +20,7 @@ namespace StarGate
                 }
             }
 
-            return noise;
+            return noise; 
         }
     }
 }
