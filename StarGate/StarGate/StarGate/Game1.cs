@@ -18,7 +18,7 @@ namespace StarGate
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        spaceShip ship;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,6 +48,7 @@ namespace StarGate
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+           ship = new spaceShip(Content.Load<Texture2D>("starGateAllSprites"));
         }
 
         /// <summary>
@@ -84,6 +85,9 @@ namespace StarGate
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            ship.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
