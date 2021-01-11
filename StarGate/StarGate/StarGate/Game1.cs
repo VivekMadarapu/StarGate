@@ -39,7 +39,7 @@ namespace StarGate
         {
             // TODO: Add your initialization logic here
             titleScreen = new TitleScreen(graphics);
-            terrain = new Terrain(800, 400, new Texture2D(GraphicsDevice, 1, 1));
+            terrain = new Terrain(5000, 500, new Texture2D(GraphicsDevice, 1, 1));
             terrain.GenerateTerrain();
             
             base.Initialize();
