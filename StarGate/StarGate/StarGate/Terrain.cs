@@ -21,25 +21,22 @@ namespace StarGate
             this.width = width;
             this.height = height;
             this.lines = lines;
-            lines.SetData(new Color[] { Color.Black });
+            lines.SetData(new Color[] { Color.White });
         }
 
         public void GenerateTerrain()
         {
-            terrainContour = new int[width * height];
+            terrainContour = new int[width];
 
-            //Make Random Numbers
-            double rand1 = random.NextDouble() + 1;
-            double rand2 = random.NextDouble() + 2;
-            double rand3 = random.NextDouble() + 3;
+            double rand1 = (random.NextDouble()+1);
+            double rand2 = (rand1+1);
+            double rand3 = (rand2);
 
-            //Variables, Play with these for unique results!
-            float peakheight = 20;
-            float flatness = 50;
-            int offset = 30;
+            float peakheight = 30;
+            float flatness = 150;
+            int offset = 200;
 
 
-            //Generate basic terrain sine
             for (int x = 0; x < width; x++)
             {
 
@@ -49,14 +46,13 @@ namespace StarGate
 
                 height += offset;
 
-                terrainContour[x] = (int)height;
-                Console.WriteLine(height);
+                terrainContour[x] = (int)height*2;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for (var i = 0; i < terrainContour.Length; i++)
+            for (var i = 0; i < terrainContour.Length; i+=2)
             {
                 spriteBatch.Draw(lines, new Rectangle(i, terrainContour[i], 1, 1), Color.White);
             }
