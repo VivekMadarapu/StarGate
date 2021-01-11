@@ -65,6 +65,11 @@ namespace StarGate
 
         }
 
+        public static void loadSpriteFont(Microsoft.Xna.Framework.Game game)
+        {
+            font = game.Content.Load<SpriteFont>("LabelPromptFont");
+        }
+
 
     }
 }

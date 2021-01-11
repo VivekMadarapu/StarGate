@@ -21,6 +21,10 @@ namespace StarGate
 
         TitleScreen titleScreen;
 
+        GamePadState oldGamePad;
+
+        GameState gameState;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -36,6 +40,10 @@ namespace StarGate
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gameState = GameState.START_SCREEN;
+
+            oldGamePad = GamePad.GetState(PlayerIndex.One);
+
             titleScreen = new TitleScreen(graphics);
 
             base.Initialize();
@@ -52,6 +60,7 @@ namespace StarGate
 
             // TODO: use this.Content to load your game content here
             titleScreen.loadTitleScreenImage(this);
+            MousePointer.loadPointerImage(this);
         }
 
         /// <summary>
@@ -70,13 +79,17 @@ namespace StarGate
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            GamePadState gamePad = GamePad.GetState(PlayerIndex.One);
+
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (gamePad.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
-            titleScreen.Update();
+            if (gameState == GameState.START_SCREEN) titleScreen.Update(gamePad, oldGamePad);
 
+
+            oldGamePad = gamePad;
             base.Update(gameTime);
         }
 
@@ -90,10 +103,15 @@ namespace StarGate
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            titleScreen.Draw(spriteBatch);
+            if (gameState == GameState.START_SCREEN) titleScreen.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+    }
+
+    public enum GameState
+    {
+        START_SCREEN, GAME_SCREEN, END_SCREEN
     }
 }
