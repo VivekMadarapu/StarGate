@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace StarGate
 {
@@ -9,14 +11,17 @@ namespace StarGate
     {
         public int[] terrainContour;
         private Random random;
+        public Texture2D lines;
         private int width;
         private int height;
 
-        public Terrain(int width, int height)
+        public Terrain(int width, int height, Texture2D lines)
         {
             this.random = new Random();
             this.width = width;
             this.height = height;
+            this.lines = lines;
+            lines.SetData(new Color[] { Color.Black });
         }
 
         public void GenerateTerrain()
@@ -46,6 +51,14 @@ namespace StarGate
 
                 terrainContour[x] = (int)height;
                 Console.WriteLine(height);
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            for (var i = 0; i < terrainContour.Length; i++)
+            {
+                spriteBatch.Draw(lines, new Rectangle(i, terrainContour[i], 1, 1), Color.White);
             }
         }
     }
