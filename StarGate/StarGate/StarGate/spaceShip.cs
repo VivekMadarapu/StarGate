@@ -21,13 +21,21 @@ namespace StarGate
         public Boolean isRight;
         public  GamePadState oldPad = GamePad.GetState(PlayerIndex.One);
 
-        public spaceShip(Texture2D tex)
+        public spaceShip(Texture2D tex, int screenW,int screenH)
         {
             this.tex = tex;
             sourceRecRight = new Rectangle((tex.Width / 29*2), (tex.Height / 2) / 10, tex.Width / 21, (tex.Height / 2) / 10);
             sourceRecLeft = new Rectangle((tex.Width / 30 * 9), (tex.Height / 2) / 10, tex.Width / 21, (tex.Height / 2) / 10);
             desRect = new Rectangle(100, 100, 70, 50);
             isRight = true;
+
+        }
+        public void Update()
+        {
+
+        }
+        public void keepShipOnScreen()
+        {
 
         }
         public void Draw(SpriteBatch spriteBatch)
