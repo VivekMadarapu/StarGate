@@ -42,9 +42,15 @@ namespace StarGate
        public  List<Projectile> projectileList;
         public int projectileCooldown;
 
-        //smartbombs (B) and (A) cloaking
-        public int cloakingTime = 301;
+        //smartbombs (B) and (A) inviso cloaking
+        public int cloakingTime = 180;
+        public Boolean isCloaked;
+
         public int smartBombs = 3;
+
+        //score?
+        //public int score;
+       
        
 
            
@@ -160,6 +166,30 @@ namespace StarGate
         {
             return desRect.Intersects(rect2);
         }
+        public void checkCloaking(GamePadState newPad)//manages cloaking device)
+        {
+            if (cloakingTime > 0 && newPad.Buttons.A == ButtonState.Pressed)
+            {
+               isCloaked = true;
+                cloakingTime--;
+
+            }
+            else
+            {
+                isCloaked = false;
+            }
+        }
+        public void startSmartBomb(GamePadState newPad, GamePadState oldPad)//preliminary code to help with smartBombs
+        {
+            //maybe add a list for the parameter
+           if(smartBombs>0 && oldPad.Buttons.B == ButtonState.Released && newPad.Buttons.B == ButtonState.Pressed)
+           {
+                smartBombs--;
+                //loop through list of enemies and search for those in visibility range 
+                //destroy enemies in visibility range and add points to scoring
+            }
+        }
+        
         public void Draw(SpriteBatch spriteBatch)
         {
             //draw projectiles
