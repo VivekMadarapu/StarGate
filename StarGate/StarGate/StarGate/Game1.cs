@@ -23,6 +23,10 @@ namespace StarGate
 
         TitleScreen titleScreen;
 
+        //user interface
+        GamePadState oldPad;
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -41,7 +45,9 @@ namespace StarGate
             titleScreen = new TitleScreen(graphics);
             terrain = new Terrain(5000, 500, new Texture2D(GraphicsDevice, 1, 1));
             terrain.GenerateTerrain();
-            
+
+            //user interface
+            oldPad = GamePad.GetState(PlayerIndex.One);
             base.Initialize();
         }
 
@@ -55,8 +61,9 @@ namespace StarGate
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            ship = new spaceShip(Content.Load<Texture2D>("starGateAllSprites"));
+           
             titleScreen.loadTitleScreenImage(this);
+            ship = new spaceShip(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content.Load<Texture2D>("projectileTex"));
         }
 
         /// <summary>
@@ -76,12 +83,16 @@ namespace StarGate
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
+            GamePadState newPad = GamePad.GetState(PlayerIndex.One);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
             titleScreen.Update();
+            //ship
+            ship.Update(oldPad, newPad);
 
+            oldPad = newPad;
             base.Update(gameTime);
         }
 
