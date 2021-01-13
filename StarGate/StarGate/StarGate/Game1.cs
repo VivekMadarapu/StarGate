@@ -23,9 +23,10 @@ namespace StarGate
 
         TitleScreen titleScreen;
 
+       public static GameState gameState;
+       
         //user interface
         GamePadState oldPad;
-
 
         public Game1()
         {
@@ -42,6 +43,8 @@ namespace StarGate
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gameState = GameState.START_SCREEN;
+
             titleScreen = new TitleScreen(graphics);
             terrain = new Terrain(5000, 500, new Texture2D(GraphicsDevice, 1, 1));
             terrain.GenerateTerrain();
@@ -63,6 +66,8 @@ namespace StarGate
             // TODO: use this.Content to load your game content here
            
             titleScreen.loadTitleScreenImage(this);
+            MousePointer.loadPointerImage(this);
+            Button.loadContent(this);
             ship = new spaceShip(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content.Load<Texture2D>("projectileTex"));
         }
 
@@ -82,15 +87,17 @@ namespace StarGate
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
             GamePadState newPad = GamePad.GetState(PlayerIndex.One);
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+
+            // Allows the game to exit
+            if (newPad.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
-            titleScreen.Update();
+            if (gameState == GameState.START_SCREEN) titleScreen.Update(newPad, oldPad);
+
             //ship
-            ship.Update(oldPad, newPad);
+            if (gameState == GameState.GAME_SCREEN) ship.Update(oldPad, newPad);
 
             oldPad = newPad;
             base.Update(gameTime);
@@ -106,14 +113,21 @@ namespace StarGate
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-
-            ship.Draw(spriteBatch);
-            titleScreen.Draw(spriteBatch);
-            terrain.Draw(spriteBatch);
-
+            if (gameState == GameState.START_SCREEN) titleScreen.Draw(spriteBatch);
+            else if (gameState == GameState.GAME_SCREEN)
+            {
+              ship.Draw(spriteBatch);
+              titleScreen.Draw(spriteBatch);
+              terrain.Draw(spriteBatch);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+    }
+
+    public enum GameState
+    {
+        START_SCREEN, SETTINGS_SCREEN, GAME_SCREEN, END_SCREEN
     }
 }

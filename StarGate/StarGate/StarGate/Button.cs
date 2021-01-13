@@ -23,6 +23,8 @@ namespace StarGate
         public String text;
         public Vector2 textLocation;
 
+        public bool overLapping;
+
         public Button(Rectangle location, String text)
         {
             this.location = location;
@@ -30,17 +32,24 @@ namespace StarGate
             double y = location.Y + (location.Height - PIXELS_PER_CHARACTER * paddingConstant) / 2;
             double x = location.X + (location.Width - PIXELS_PER_CHARACTER * text.Length) / 2;
             this.textLocation = new Vector2((float)x, (float)y);
+            overLapping = true;
+        }
+
+        public static void loadContent(Microsoft.Xna.Framework.Game game)
+        {
+            font = game.Content.Load<SpriteFont>("LabelPromptFont");
+            buttonImage = game.Content.Load<Texture2D>("White-Square");
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(buttonImage, location, Color.Black);
-            spriteBatch.DrawString(font, text, textLocation, Color.White);
+            spriteBatch.Draw(buttonImage, location, (overLapping) ? Color.White : Color.Black);
+            spriteBatch.DrawString(font, text, textLocation, (overLapping) ? Color.Black : Color.White);
         }
 
-        public bool checkForMouseIntersect(float x, float y)
+        public void Update(float x, float y)
         {
-            return x > location.Left && x < location.Right && y > location.Top && y < location.Bottom;
+            overLapping = x > location.Left && x < location.Right && y > location.Top && y < location.Bottom;
         }
 
     }
@@ -63,6 +72,11 @@ namespace StarGate
         {
             spriteBatch.DrawString(font, text, location, Color.Black);
 
+        }
+
+        public static void loadSpriteFont(Microsoft.Xna.Framework.Game game)
+        {
+            font = game.Content.Load<SpriteFont>("LabelPromptFont");
         }
 
 
