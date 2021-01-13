@@ -14,6 +14,8 @@ namespace StarGate
         public Texture2D lines;
         private int width;
         private int height;
+        public int leftBound;
+        public int rightBound;
 
         public Terrain(int width, int height, Texture2D lines)
         {
@@ -50,12 +52,13 @@ namespace StarGate
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Color color)
         {
-            for (var i = 0; i < terrainContour.Length; i+=2)
+            for (var i = 0; i < terrainContour.Length; i += 2)
             {
-                spriteBatch.Draw(lines, new Rectangle(i, terrainContour[i], 1, 1), Color.White);
+                spriteBatch.Draw(lines, new Rectangle(i, terrainContour[i], 1, 1), color);
             }
         }
+
     }
 }

@@ -22,8 +22,9 @@ namespace StarGate
         private Terrain terrain;
 
         TitleScreen titleScreen;
+        GameScreen gameScreen;
 
-       public static GameState gameState;
+        public static GameState gameState;
        
         //user interface
         GamePadState oldPad;
@@ -94,7 +95,7 @@ namespace StarGate
                 this.Exit();
 
             // TODO: Add your update logic here
-            if (gameState == GameState.START_SCREEN) titleScreen.Update(newPad, oldPad);
+            if (gameState == GameState.START_SCREEN) titleScreen.Update(graphics, newPad, oldPad);
 
             //ship
             if (gameState == GameState.GAME_SCREEN) ship.Update(oldPad, newPad);
@@ -116,8 +117,8 @@ namespace StarGate
             if (gameState == GameState.START_SCREEN) titleScreen.Draw(spriteBatch);
             else if (gameState == GameState.GAME_SCREEN)
             {
-              ship.Draw(spriteBatch);
-              terrain.Draw(spriteBatch);
+                ship.Draw(spriteBatch);
+                terrain.Draw(spriteBatch, Color.White);
             }
             spriteBatch.End();
 

@@ -38,14 +38,19 @@ namespace StarGate
             titleImage = game.Content.Load<Texture2D>("starGateTitle");
         }
 
-        public void Update(GamePadState gamePad, GamePadState oldPad)
+        public void Update(GraphicsDeviceManager graphics, GamePadState gamePad, GamePadState oldPad)
         {
             if (sourceRectangle.Width < titleImage.Width) sourceRectangle.Width++;
             mousePointer.Update(gamePad);
             settingsButton.Update((float)mousePointer.x, (float)mousePointer.y);
             startGameButton.Update((float)mousePointer.x, (float)mousePointer.y);
             if (settingsButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed) Game1.gameState = GameState.SETTINGS_SCREEN;
-            if (startGameButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed) Game1.gameState = GameState.GAME_SCREEN;
+            if (startGameButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed)
+            {
+                Game1.gameState = GameState.GAME_SCREEN;
+                graphics.PreferredBackBufferWidth = TITLESCREEN_SIZE;
+                graphics.PreferredBackBufferHeight = TITLESCREEN_SIZE;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
