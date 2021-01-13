@@ -23,7 +23,7 @@ namespace StarGate
 
         GamePadState oldGamePad;
 
-        GameState gameState;
+       public static GameState gameState;
 
         public Game1()
         {
@@ -61,6 +61,7 @@ namespace StarGate
             // TODO: use this.Content to load your game content here
             titleScreen.loadTitleScreenImage(this);
             MousePointer.loadPointerImage(this);
+            Button.loadContent(this);
         }
 
         /// <summary>
@@ -112,6 +113,6 @@ namespace StarGate
 
     public enum GameState
     {
-        START_SCREEN, GAME_SCREEN, END_SCREEN
+        START_SCREEN, SETTINGS_SCREEN, GAME_SCREEN, END_SCREEN
     }
 }
