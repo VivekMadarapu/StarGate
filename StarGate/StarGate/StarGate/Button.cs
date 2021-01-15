@@ -70,7 +70,7 @@ namespace StarGate
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, text, location, Color.Black);
+            spriteBatch.DrawString(font, text, location, Color.White);
 
         }
 
