@@ -62,7 +62,7 @@ namespace StarGate
 
             //sourceRect = sourceRects[counter];
             //counter++;
-        }
+        }      
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(tex, desRect, sourceRect, Color.White);
