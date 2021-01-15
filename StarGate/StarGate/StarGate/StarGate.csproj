@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Button.cs" />
     <Compile Include="Enemies\Bomber.cs" />
+    <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="Lander.cs" />
     <Compile Include="GameScreen.cs" />
     <Compile Include="MousePointer.cs" />

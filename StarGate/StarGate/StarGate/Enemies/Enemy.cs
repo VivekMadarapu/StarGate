@@ -5,11 +5,8 @@ using System.Text;
 
 namespace StarGate.Enemies
 {
-    class Bomber : Enemy
+    class Enemy
     {
-
-
-
 
     }
 }
