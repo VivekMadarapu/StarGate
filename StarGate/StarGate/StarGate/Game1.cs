@@ -24,7 +24,8 @@ namespace StarGate
         GameScreen gameScreen;
 
         public static GameState gameState;
-       
+        //just for testing
+       // Lander lander;
         //user interface
         GamePadState oldPad;
 
@@ -93,7 +94,9 @@ namespace StarGate
             // Allows the game to exit
             if (newPad.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+            //test lander
 
+            // lander.Update();
             // TODO: Add your update logic here
             if (gameState == GameState.START_SCREEN)
                 titleScreen.Update(graphics, newPad, oldPad);
@@ -116,12 +119,14 @@ namespace StarGate
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            
             if (gameState == GameState.START_SCREEN)
                 titleScreen.Draw(spriteBatch);
             else if (gameState == GameState.SETTINGS_SCREEN)
                 settingsScreen.Draw(spriteBatch);
             else if (gameState == GameState.GAME_SCREEN)
                 gameScreen.Draw(GraphicsDevice, spriteBatch);
+                
             spriteBatch.End();
 
             base.Draw(gameTime);
