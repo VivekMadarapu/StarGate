@@ -72,9 +72,9 @@ namespace StarGate
                 bound = 5000 - width;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Color color)
+        public void Draw(SpriteBatch spriteBatch, Color color, int width)
         {
-            for (int i = 0; i < 800; i += 2)
+            for (int i = 0; i < width; i += 2)
             {
                 spriteBatch.Draw(lines, new Rectangle(i, terrainContour[i+bound], 1, 1), color);
             }
