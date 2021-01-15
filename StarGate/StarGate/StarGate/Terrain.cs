@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace StarGate
 {
@@ -14,12 +15,14 @@ namespace StarGate
         public Texture2D lines;
         private int width;
         private int height;
+        public int bound;
 
         public Terrain(int width, int height, Texture2D lines)
         {
             this.random = new Random();
             this.width = width;
             this.height = height;
+            bound = 0;
             this.lines = lines;
             lines.SetData(new Color[] { Color.White });
         }
@@ -50,12 +53,32 @@ namespace StarGate
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Update(GamePadState newPad, spaceShip ship, int width)
         {
-            for (var i = 0; i < terrainContour.Length; i+=2)
+            if (bound >= 0 && bound <= 5000-width)
             {
-                spriteBatch.Draw(lines, new Rectangle(i, terrainContour[i], 1, 1), Color.White);
+                if (ship.desRect.Right >= width-5 && newPad.Triggers.Left != 0)
+                    bound += 10;
+                else if (ship.desRect.Left <= 5 && newPad.Triggers.Left != 0)
+                    bound -= 10;
+                else if (ship.isRight)
+                    bound += 5;
+                else
+                    bound -= 5;
+            }
+            if (bound < 0)
+                bound = 0;
+            else if (bound >= 5000 - width)
+                bound = 5000 - width;
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Color color)
+        {
+            for (int i = 0; i < 800; i += 2)
+            {
+                spriteBatch.Draw(lines, new Rectangle(i, terrainContour[i+bound], 1, 1), color);
             }
         }
+
     }
 }
