@@ -122,7 +122,7 @@ namespace StarGate
             else if (gameState == GameState.GAME_SCREEN)
             {
                 ship.Draw(spriteBatch);
-                terrain.Draw(spriteBatch, Color.White);
+                terrain.Draw(spriteBatch, Color.White, GraphicsDevice.Viewport.Width);
             }
             spriteBatch.End();
 

@@ -48,8 +48,8 @@ namespace StarGate
             if (startGameButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed)
             {
                 Game1.gameState = GameState.GAME_SCREEN;
-                graphics.PreferredBackBufferWidth = TITLESCREEN_SIZE;
-                graphics.PreferredBackBufferHeight = TITLESCREEN_SIZE;
+                graphics.PreferredBackBufferWidth = 800;
+                graphics.PreferredBackBufferHeight = 500;
             }
         }
 
