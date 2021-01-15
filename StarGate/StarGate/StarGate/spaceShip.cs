@@ -135,7 +135,6 @@ namespace StarGate
                     i--;
                 }
 
-
             }
             //collision detections
             keepShipOnScreen();
@@ -200,7 +199,7 @@ namespace StarGate
             
             //draw ship
             if(!isRight)
-            spriteBatch.Draw(tex, desRect, sourceRecLeft, Color.White);
+                spriteBatch.Draw(tex, desRect, sourceRecLeft, Color.White);
             else
                 spriteBatch.Draw(tex, desRect, sourceRecRight, Color.White);
 
