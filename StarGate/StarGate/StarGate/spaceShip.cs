@@ -26,8 +26,8 @@ namespace StarGate
         public Boolean isRight;
 
         //screen dimensions
-        int screenW;
-        int screenH;
+        public int screenW;
+        public int screenH;
 
         //movment
         public const int SPEED = 5;
@@ -39,7 +39,7 @@ namespace StarGate
         public int animator = 1;
 
         //projectile management
-       public  List<Projectile> projectileList;
+        public  List<Projectile> projectileList;
         public int projectileCooldown;
 
         //smartbombs (B) and (A) cloaking

@@ -98,7 +98,11 @@ namespace StarGate
             if (gameState == GameState.START_SCREEN) titleScreen.Update(graphics, newPad, oldPad);
 
             //ship
-            if (gameState == GameState.GAME_SCREEN) ship.Update(oldPad, newPad);
+            if (gameState == GameState.GAME_SCREEN)
+            {
+                ship.Update(oldPad, newPad);
+                terrain.Update(newPad, ship, GraphicsDevice.Viewport.Width);
+            }
 
             oldPad = newPad;
             base.Update(gameTime);
