@@ -18,6 +18,21 @@ namespace StarGate
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        spaceShip ship;
+        private Terrain terrain;
+
+        TitleScreen titleScreen;
+        GameScreen gameScreen;
+
+        public static GameState gameState;
+        //just for testing
+        Lander lander;
+
+        // Lander lander;
+
+
+        //user interface
+        GamePadState oldPad;
 
         public Game1()
         {
@@ -34,7 +49,14 @@ namespace StarGate
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gameState = GameState.START_SCREEN;
 
+            titleScreen = new TitleScreen(graphics);
+            terrain = new Terrain(5000, 500, new Texture2D(GraphicsDevice, 1, 1));
+            terrain.GenerateTerrain();
+
+            //user interface
+            oldPad = GamePad.GetState(PlayerIndex.One);
             base.Initialize();
         }
 
@@ -48,6 +70,12 @@ namespace StarGate
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+           
+            titleScreen.loadTitleScreenImage(this);
+            MousePointer.loadPointerImage(this);
+            Button.loadContent(this);
+            ship = new spaceShip(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content.Load<Texture2D>("projectileTex"));
+            // lander = new Lander(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         }
 
         /// <summary>
@@ -66,12 +94,24 @@ namespace StarGate
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            GamePadState newPad = GamePad.GetState(PlayerIndex.One);
+
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (newPad.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
+            //test lander
+            // lander.Update();
             // TODO: Add your update logic here
+            if (gameState == GameState.START_SCREEN) titleScreen.Update(graphics, newPad, oldPad);
 
+            //ship and terrain
+            if (gameState == GameState.GAME_SCREEN)
+            {
+                ship.Update(oldPad, newPad);
+                terrain.Update(newPad, ship, GraphicsDevice.Viewport.Width);
+            }
+
+            oldPad = newPad;
             base.Update(gameTime);
         }
 
@@ -81,11 +121,25 @@ namespace StarGate
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            if (gameState == GameState.START_SCREEN) titleScreen.Draw(spriteBatch);
+            else if (gameState == GameState.GAME_SCREEN)
+            {
+                ship.Draw(spriteBatch);
+                terrain.Draw(spriteBatch, Color.White, GraphicsDevice.Viewport.Width);
+            }
+            // lander.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
+    }
+
+    public enum GameState
+    {
+        START_SCREEN, SETTINGS_SCREEN, GAME_SCREEN, END_SCREEN
     }
 }
