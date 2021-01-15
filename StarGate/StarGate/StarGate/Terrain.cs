@@ -53,7 +53,7 @@ namespace StarGate
             }
         }
 
-        public void Update(GamePadState newPad, spaceShip ship, int width)
+        public void Update(GamePadState newPad, SpaceShip ship, int width)
         {
             if (bound >= 0 && bound <= 5000-width)
             {

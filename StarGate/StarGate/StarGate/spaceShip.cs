@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 namespace StarGate
 {
   
-    class spaceShip
+    class SpaceShip
     {
         //textures
         public Texture2D tex;
@@ -49,10 +49,11 @@ namespace StarGate
 
            
 
-        public spaceShip(Texture2D tex, int screenW,int screenH, Texture2D projectileTex)
+        public SpaceShip(Texture2D tex, int screenW,int screenH, Texture2D projectileTex)
         {
             //textures
             this.tex = tex;
+            projectileTex.SetData(new Color[] { Color.White });
             this.projectileTex = projectileTex;
 
             //screen dimensions
