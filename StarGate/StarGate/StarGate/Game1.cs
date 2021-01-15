@@ -24,12 +24,9 @@ namespace StarGate
         TitleScreen titleScreen;
         GameScreen gameScreen;
 
-       public static GameState gameState;
+        public static GameState gameState;
         //just for testing
        // Lander lander;
-
-       
-       
         //user interface
         GamePadState oldPad;
 
@@ -75,6 +72,7 @@ namespace StarGate
             Button.loadContent(this);
             ship = new spaceShip(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content.Load<Texture2D>("projectileTex"));
            // lander = new Lander(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
         }
 
         /// <summary>
@@ -99,12 +97,12 @@ namespace StarGate
             if (newPad.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             //test lander
-           // lander.Update();
+
+            // lander.Update();
             // TODO: Add your update logic here
             if (gameState == GameState.START_SCREEN) titleScreen.Update(graphics, newPad, oldPad);
 
-            //ship
-            if (gameState == GameState.GAME_SCREEN)  ship.Update(oldPad, newPad);
+            //ship and terrain
             if (gameState == GameState.GAME_SCREEN)
             {
                 ship.Update(oldPad, newPad);
@@ -128,14 +126,12 @@ namespace StarGate
             if (gameState == GameState.START_SCREEN) titleScreen.Draw(spriteBatch);
             else if (gameState == GameState.GAME_SCREEN)
             {
-              ship.Draw(spriteBatch);
-              terrain.Draw(spriteBatch);
-                //enemy testing
-               
                 ship.Draw(spriteBatch);
                 terrain.Draw(spriteBatch, Color.White, GraphicsDevice.Viewport.Width);
             }
-          //  lander.Draw(spriteBatch);
+
+            // lander.Draw(spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
