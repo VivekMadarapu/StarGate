@@ -13,21 +13,28 @@ namespace StarGate
 {
     class GameScreen
     {
-        public GameScreen(GraphicsDeviceManager graphics, spaceShip ship, Terrain terrain)
+        SpaceShip ship;
+        Terrain terrain;
+
+        public void initializeGameObjects(Microsoft.Xna.Framework.Game game)
         {
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 500;
-            graphics.ApplyChanges();
+            ship = new SpaceShip(game.Content.Load<Texture2D>("starGateAllSprites"), 
+                800, 500, new Texture2D(game.GraphicsDevice, 1, 1));
+
+            terrain = new Terrain(5000, 500, new Texture2D(game.GraphicsDevice, 1, 1));
+            terrain.GenerateTerrain();
         }
 
-        public void Update(GamePadState gamePad, GamePadState oldPad)
+        public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad)
         {
-            
+            ship.Update(oldPad, newPad);
+            terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {
-            
+            ship.Draw(spriteBatch);
+            terrain.Draw(spriteBatch, Color.White, graphicsDevice.Viewport.Width);
         }
     }
 }

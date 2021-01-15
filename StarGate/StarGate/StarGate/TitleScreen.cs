@@ -17,7 +17,7 @@ namespace StarGate
         public Texture2D titleImage;
         public Vector2 titleImageContainer;
         public Rectangle sourceRectangle;
-        MousePointer mousePointer;
+        public MousePointer mousePointer;
         Button settingsButton, startGameButton;
         
         public TitleScreen(GraphicsDeviceManager graphics)
@@ -50,6 +50,7 @@ namespace StarGate
                 Game1.gameState = GameState.GAME_SCREEN;
                 graphics.PreferredBackBufferWidth = 800;
                 graphics.PreferredBackBufferHeight = 500;
+                graphics.ApplyChanges();
             }
         }
 
@@ -58,6 +59,45 @@ namespace StarGate
             spriteBatch.Draw(titleImage, titleImageContainer, sourceRectangle, Color.White);
             settingsButton.Draw(spriteBatch);
             startGameButton.Draw(spriteBatch);
+            mousePointer.Draw(spriteBatch);
+        }
+    }
+
+    
+
+    class SettingsScreen
+    {
+        public static String controls =
+            "Settings: \n\n" +
+            "Left Thumbstick - move up and down\n" +
+            "Left Trigger - Thrust\n" +
+            "X - Reverse\n" +
+            "Y - Fire\n" +
+            "A - Inviso Cloaking Device\n" +
+            "B - Smart Bombs";
+
+        public LabelPrompt settingsPrompt;
+        public Button backButton;
+        public MousePointer mousePointer;
+
+        public SettingsScreen(MousePointer mousePointer)
+        {
+            settingsPrompt = new LabelPrompt(new Vector2(50, 100), controls);
+            backButton = new StarGate.Button(new Rectangle(370, 400, 100, 25), "Back");
+            this.mousePointer = mousePointer;
+        }
+
+        public void Update(GamePadState gamePad, GamePadState oldPad)
+        {
+            mousePointer.Update(gamePad);
+            backButton.Update((float)mousePointer.x, (float)mousePointer.y);
+            if (backButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed) Game1.gameState = GameState.START_SCREEN;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            backButton.Draw(spriteBatch);
+            settingsPrompt.Draw(spriteBatch);
             mousePointer.Draw(spriteBatch);
         }
     }
