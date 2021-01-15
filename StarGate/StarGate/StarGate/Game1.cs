@@ -24,11 +24,9 @@ namespace StarGate
         TitleScreen titleScreen;
         GameScreen gameScreen;
 
-       public static GameState gameState;
+        public static GameState gameState;
         //just for testing
         Lander lander;
-
-        public static GameState gameState;
        
         //user interface
         GamePadState oldPad;
@@ -103,8 +101,7 @@ namespace StarGate
             // TODO: Add your update logic here
             if (gameState == GameState.START_SCREEN) titleScreen.Update(graphics, newPad, oldPad);
 
-            //ship
-            if (gameState == GameState.GAME_SCREEN)  ship.Update(oldPad, newPad);
+            //ship and terrain
             if (gameState == GameState.GAME_SCREEN)
             {
                 ship.Update(oldPad, newPad);
@@ -129,7 +126,7 @@ namespace StarGate
             else if (gameState == GameState.GAME_SCREEN)
             {
               ship.Draw(spriteBatch);
-              terrain.Draw(spriteBatch);
+              terrain.Draw(spriteBatch, Color.White, GraphicsDevice.Viewport.Width);
                 //enemy testing
                
                 ship.Draw(spriteBatch);
