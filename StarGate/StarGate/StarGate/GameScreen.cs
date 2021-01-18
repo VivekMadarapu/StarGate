@@ -27,7 +27,7 @@ namespace StarGate
 
         public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad)
         {
-            ship.Update(oldPad, newPad);
+            ship.Update(oldPad, newPad, terrain);
             terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
         }
 

@@ -47,29 +47,23 @@ namespace StarGate
         public Boolean isCloaked;
 
         public int smartBombs = 3;
-
-        //score?
-        //public int score;
-       
-       
-
            
 
         public SpaceShip(Texture2D tex, int screenW,int screenH, Texture2D projectileTex)
         {
             //textures
             this.tex = tex;
-            projectileTex.SetData(new Color[] { Color.White });
-            this.projectileTex = projectileTex;
 
+            this.projectileTex = projectileTex;
+           // projectileTex.SetData(new Color[] { Color.White });
             //screen dimensions
-            this.screenW = screenW;
+            this.screenW = 800;
             this.screenH = screenH;
 
             //rectangles
             sourceRecRight = new Rectangle((tex.Width / 29*2), (tex.Height / 2) / 10, tex.Width / 21, (tex.Height / 2) / 10);
             sourceRecLeft = new Rectangle((tex.Width / 30 * 9), (tex.Height / 2) / 10, tex.Width / 21, (tex.Height / 2) / 10);
-            desRect = new Rectangle(rand.Next(0,screenW-50), rand.Next(0,screenH/2), 50, 30);
+            desRect = new Rectangle(rand.Next(400,401), rand.Next(0,screenH/2), 50, 30);
 
             //booleans
             if (desRect.X > screenW / 2)
@@ -82,18 +76,20 @@ namespace StarGate
             projectileCooldown = 21;
 
         }
-        public void Update(GamePadState oldPad, GamePadState newPad)
+        public void Update(GamePadState oldPad, GamePadState newPad, Terrain terrain)
         {
-           
+
             //reverse
-            if(oldPad.Buttons.X == ButtonState.Released && newPad.Buttons.X == ButtonState.Pressed)
+            if (oldPad.Buttons.X == ButtonState.Released && newPad.Buttons.X == ButtonState.Pressed)
             {
                 isRight = !isRight;
             }
             //thrust
-            if(newPad.Triggers.Left != 0)
+            if ((terrain.bound == 0) || (terrain.bound>=4200/*-desRect.Width*/))
             {
-                if(isRight)
+                if (newPad.Triggers.Left != 0)
+            {
+                if (isRight)
                 {
                     desRect.X += SPEED;
                 }
@@ -102,6 +98,8 @@ namespace StarGate
                     desRect.X -= SPEED;
                 }
             }
+          
+        }
 
             //thumbstick (up and down motion)
             if(newPad.ThumbSticks.Left.Y>0)
@@ -153,14 +151,14 @@ namespace StarGate
         public void keepShipOnScreen()//keeps the spaceship from going off screen
         {
             if (desRect.Right >= screenW)
-                desRect.X -= SPEED;
+                desRect.X = screenW - desRect.Width;
             else if (desRect.Left <= 0)
-                desRect.X += SPEED;
+                desRect.X = 0; ;
 
             if (desRect.Y >= screenH)
-                desRect.Y -= SPEED;
+                desRect.Y = screenH-desRect.Height;
             else if (desRect.Y <= 0)
-                desRect.Y += SPEED;
+                desRect.Y = 0;
         }
         public Boolean collidesWithShip(Rectangle rect2)//checks if ship collides with anything
         {

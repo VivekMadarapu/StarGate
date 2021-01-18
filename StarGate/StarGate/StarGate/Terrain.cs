@@ -57,19 +57,30 @@ namespace StarGate
         {
             if (bound >= 0 && bound <= 5000-width)
             {
-                if (ship.desRect.Right >= width-5 && newPad.Triggers.Left != 0)
-                    bound += 10;
-                else if (ship.desRect.Left <= 5 && newPad.Triggers.Left != 0)
-                    bound -= 10;
-                else if (ship.isRight)
-                    bound += 5;
-                else
+                //if (ship.desRect.Right >= width-5 && newPad.Triggers.Left != 0)
+                //    bound += 10;
+                //else if (ship.desRect.Left <= 5 && newPad.Triggers.Left != 0)
+                //    bound -= 10;
+                //else if (ship.isRight)
+                //    bound += 5;
+                //else
+                //    bound -= 5;
+
+                if(ship.isRight && newPad.Triggers.Left !=0 && ship.desRect.X>=400)
+                {
+                    bound +=5;
+                }
+                else if(newPad.Triggers.Left !=0 && ship.desRect.X<=400 && !ship.isRight)
+                { 
                     bound -= 5;
+                }
+               
             }
             if (bound < 0)
                 bound = 0;
-            else if (bound >= 5000 - width)
+            else if (bound > 5000 - width)
                 bound = 5000 - width;
+          
         }
 
         public void Draw(SpriteBatch spriteBatch, Color color, int width)
