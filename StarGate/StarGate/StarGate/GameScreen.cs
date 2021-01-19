@@ -34,12 +34,12 @@ namespace StarGate
             mutant = new Mutant(new Rectangle(100,100,50,50), game);
         }
 
-        public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad)
+        public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad, double gameTime)
         {
             ship.Update(oldPad, newPad, terrain);
             terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
             lander.Update(ship, newPad, terrain);
-            bomber.Update(ship, newPad, terrain);
+            bomber.Update(gameTime, ship, newPad, terrain);
             mutant.Update(ship, newPad, terrain);
         }
 
