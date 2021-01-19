@@ -43,12 +43,11 @@ namespace StarGate.Enemies
         public Lander(Microsoft.Xna.Framework.Game game)
         {
             //tex
-            this.tex = tex;
+            this.tex = game.Content.Load<Texture2D>("starGateAllSprites");
             //screen dimensions
             this.screenW = 800;
             this.screenH = 500;
 
-            loadLanderImage(game);
             //Rectangles
             desRect = new Rectangle(rand.Next(0,5000-SIZE), rand.Next(0, screenH / 2), SIZE, SIZE);
           
@@ -59,68 +58,80 @@ namespace StarGate.Enemies
             transform = false;
 
         }
-        public  void loadLanderImage(Microsoft.Xna.Framework.Game game)
-        {
-            tex = game.Content.Load<Texture2D>("starGateAllSprites");
-        }
         public void Update(/*List<Humanoid> humanoids,*/SpaceShip ship, GamePadState newPad, Terrain terrain)
         {
             //offcreen update
             relationalUpdate(terrain, ship, newPad);
-            
-           if(isOnScreen() && !hasHumanoid && !transform)
+            if ((terrain.bound == 0) || (terrain.bound >= 4200/*-desRect.Width*/) )
             {
-                /*int humanTarget = locateHumanoid(humanoids);
-                 * if(humanoids[humanTarget].rect.X>=desRect.X+5)
-                 * {
-                 *   desRect.X+=SPEED;
-                   }
-                   else if(humanoids[humanTarget].rect.X<=desRect.X-5)
-                   {
-                    desRect.X-=SPEED;
-                    }
-
-                 * if(humanoids[humanTarget].rect.Y>=desRect.Y+5)
-                 * {
-                 *   desRect.Y+=SPEED;
-                   }
-                   else if(humanoids[humanTarget].rect.Y<=desRect.X-5)
-                   {
-                    desRect.Y-=SPEED;
-                    }
-                  
-                  if(Math.Sqrt(Math.Pow(desRect.X-humanoids[humanTarget].rect.X,2) + Math.Pow(desRect.Y-humanoids[humanTarget].rect.Y,2))<=5);
-                    hasHumanoid=true;
-                   
-                 **/
-
                 
-            }
-            else if(hasHumanoid && !transform)
-           {
-                desRect.Y -= SPEED/2;
-                if(desRect.Y<=0)
+                if (newPad.Triggers.Left != 0 && ship.desRect.X==400)
                 {
-                    transform = true;
+                    if (ship.isRight)
+                    {
+                        desRect.X += SPEED;
+                    }
+                    else
+                    {
+                        desRect.X -= SPEED;
+                    }
                 }
-           }
+            }
 
-           //sourceRect = sourceRects[counter];
-            //counter++;
-        }
+                if (isOnScreen() && !hasHumanoid && !transform)
+                {
+                    /*int humanTarget = locateHumanoid(humanoids);
+                     * if(humanoids[humanTarget].rect.X>=desRect.X+5)
+                     * {
+                     *   desRect.X+=SPEED;
+                       }
+                       else if(humanoids[humanTarget].rect.X<=desRect.X-5)
+                       {
+                        desRect.X-=SPEED;
+                        }
+
+                     * if(humanoids[humanTarget].rect.Y>=desRect.Y+5)
+                     * {
+                     *   desRect.Y+=SPEED;
+                       }
+                       else if(humanoids[humanTarget].rect.Y<=desRect.X-5)
+                       {
+                        desRect.Y-=SPEED;
+                        }
+
+                      if(Math.Sqrt(Math.Pow(desRect.X-humanoids[humanTarget].rect.X,2) + Math.Pow(desRect.Y-humanoids[humanTarget].rect.Y,2))<=5);
+                        hasHumanoid=true;
+
+                     **/
+
+
+                }
+                else if (hasHumanoid && !transform)
+                {
+                    desRect.Y -= SPEED / 2;
+                    if (desRect.Y <= 0)
+                    {
+                        transform = true;
+                    }
+                }
+
+                //sourceRect = sourceRects[counter];
+                //counter++;
+            }
+        
         public void relationalUpdate(Terrain terrain, SpaceShip ship, GamePadState newPad)//changes landers position in relation to the spaceship
         {
             if (newPad.Triggers.Left != 0 && terrain.bound != 0 && terrain.bound != 4200)
             {
 
-                if (ship.isRight)
+                if (ship.isRight && ship.desRect.X==400)
                 {
                     if (terrain.bound < 4200)
                         desRect.X -= SPEED;
                 }
                 else
                 {
-                    if (terrain.bound > 0)
+                    if (terrain.bound > 0 && ship.desRect.X==400)
                         desRect.X += SPEED;
                 }
             }

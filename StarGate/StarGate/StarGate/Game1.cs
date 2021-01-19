@@ -105,7 +105,7 @@ namespace StarGate
             else if (gameState == GameState.SETTINGS_SCREEN)
                 settingsScreen.Update(newPad, oldPad);
             else if (gameState == GameState.GAME_SCREEN)
-                gameScreen.Update(GraphicsDevice, newPad, oldPad);              
+                gameScreen.Update(GraphicsDevice, newPad, oldPad, gameTime.ElapsedGameTime.TotalSeconds);              
 
             oldPad = newPad;
             base.Update(gameTime);
