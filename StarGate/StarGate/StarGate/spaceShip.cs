@@ -63,7 +63,7 @@ namespace StarGate
             //rectangles
             sourceRecRight = new Rectangle((tex.Width / 29*2), (tex.Height / 2) / 10, tex.Width / 21, (tex.Height / 2) / 10);
             sourceRecLeft = new Rectangle((tex.Width / 30 * 9), (tex.Height / 2) / 10, tex.Width / 21, (tex.Height / 2) / 10);
-            desRect = new Rectangle(rand.Next(400,401), rand.Next(0,screenH/2), 50, 30);
+            desRect = new Rectangle(395, rand.Next(0,screenH/2), 50, 30);
 
             //booleans
             if (desRect.X > screenW / 2)
@@ -88,27 +88,26 @@ namespace StarGate
             if ((terrain.bound == 0) || (terrain.bound>=4200/*-desRect.Width*/))
             {
                 if (newPad.Triggers.Left != 0)
-            {
-                if (isRight)
                 {
-                    desRect.X += SPEED;
-                }
-                else
-                {
-                    desRect.X -= SPEED;
+                    if (isRight)
+                    {
+                        desRect.X += SPEED;
+                    }
+                    else
+                    {
+                        desRect.X -= SPEED;
+                    }
                 }
             }
-          
-        }
 
             //thumbstick (up and down motion)
             if(newPad.ThumbSticks.Left.Y>0)
             {
-                desRect.Y -= SPEED;
+                desRect.Y -= 2;
             }
             else if(newPad.ThumbSticks.Left.Y<0)
             {
-                desRect.Y += SPEED;
+                desRect.Y += 2;
             }
             //firing
             if (oldPad.Buttons.Y == ButtonState.Released && newPad.Buttons.Y == ButtonState.Pressed && projectileCooldown == 21)
