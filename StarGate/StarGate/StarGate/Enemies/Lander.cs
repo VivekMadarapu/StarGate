@@ -104,10 +104,7 @@ namespace StarGate.Enemies
                 }
            }
 
-           
-
-
-            //sourceRect = sourceRects[counter];
+           //sourceRect = sourceRects[counter];
             //counter++;
         }
         public void relationalUpdate(Terrain terrain, SpaceShip ship, GamePadState newPad)//changes landers position in relation to the spaceship
@@ -128,6 +125,7 @@ namespace StarGate.Enemies
             }
 
         }
+
         public Boolean isOnScreen()
         {
             return desRect.X >= 0 && desRect.Right <= screenW && desRect.Y >= 0 && desRect.Bottom <= screenH;
@@ -151,14 +149,12 @@ namespace StarGate.Enemies
         //     */
         //return minIndex;
         //}
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(tex, desRect, sourceRect, Color.White);
         }
 
 
-
-
-        
     }
 }

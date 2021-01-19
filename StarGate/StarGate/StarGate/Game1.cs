@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using StarGate.Enemies;
 
 namespace StarGate
 {
@@ -25,12 +26,13 @@ namespace StarGate
         GameScreen gameScreen;
 
         public static GameState gameState;
-        //just for testing
-        
+        //user interface
+        GamePadState oldPad;        
+        //enemies
+        Lander lander;
+        private Bomber bomber;
         //user interface
         GamePadState oldPad;
-  
-        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -72,7 +74,8 @@ namespace StarGate
             MousePointer.loadPointerImage(this);
             Button.loadContent(this);
            ship = new SpaceShip(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content.Load<Texture2D>("projectileTex"));
-          
+           lander = new Lander(Content.Load<Texture2D>("starGateAllSprites"));
+           bomber = new Bomber(Content.Load<Texture2D>("starGateAllSprites"));
 
         }
 
@@ -97,9 +100,9 @@ namespace StarGate
             // Allows the game to exit
             if (newPad.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            //test lander
+            
 
-            // lander.Update();
+            
             // TODO: Add your update logic here
             if (gameState == GameState.START_SCREEN) titleScreen.Update(graphics, newPad, oldPad);
 
@@ -108,7 +111,8 @@ namespace StarGate
             {
                 ship.Update(oldPad, newPad, terrain);
                 terrain.Update(newPad, ship, GraphicsDevice.Viewport.Width);
-               
+                lander.Update(ship, newPad, terrain);
+                bomber.Update(ship, newPad, terrain);
             }
 
             oldPad = newPad;
@@ -130,10 +134,13 @@ namespace StarGate
             {
                 ship.Draw(spriteBatch);
                 terrain.Draw(spriteBatch, Color.White, GraphicsDevice.Viewport.Width);
+
                 
            }
 
-           
+                lander.Draw(spriteBatch);
+                bomber.Draw(spriteBatch);
+            }
 
             spriteBatch.End();
 
