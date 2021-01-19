@@ -21,7 +21,7 @@ namespace StarGate.Enemies
         int counter = 0;
 
         //speed/dimensions
-        public const int SIZE = 30;
+        public const int SIZE = 18;
         public const int SPEED = 5;
         //random
         public Random rand = new Random();
@@ -35,7 +35,7 @@ namespace StarGate.Enemies
             //tex
             this.tex = tex;
             //Rectangles
-            desRect = new Rectangle(rand.Next(0, 5000 - SIZE), rand.Next(0, screenH / 2), SIZE, SIZE);
+            desRect = new Rectangle(100, rand.Next(10, 400), SIZE, SIZE);
 
             //screen dimensions
             this.screenW = 800;
@@ -51,11 +51,11 @@ namespace StarGate.Enemies
             {
                 desRect.Y--;
             }
-            else
-            {
-                desRect.Y -= SPEED / 2;
-                
-            }
+            // else
+            // {
+            //     desRect.Y -= SPEED / 2;
+            //     
+            // }
 
             //sourceRect = sourceRects[counter];
             //counter++;

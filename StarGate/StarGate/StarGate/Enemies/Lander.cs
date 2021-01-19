@@ -44,19 +44,19 @@ namespace StarGate.Enemies
         {
             //tex
             this.tex = tex;
+            //screen dimensions
+            this.screenW = 800;
+            this.screenH = 500;
+
             //Rectangles
             desRect = new Rectangle(rand.Next(0,5000-SIZE), rand.Next(0, screenH / 2), SIZE, SIZE);
           
             sourceRect = new Rectangle(tex.Width / 30 * (10), tex.Height / 29 * 10, tex.Width / 22, tex.Height / 25);
-            //screen dimensions
-            this.screenW = 800;
-            this.screenH = 500;
+            
             //humanoid interaction
             hasHumanoid = false;
             transform = false;
 
-           
-            
         }
         public void Update(/*List<Humanoid> humanoids,*/SpaceShip ship, GamePadState newPad, Terrain terrain)
         {
