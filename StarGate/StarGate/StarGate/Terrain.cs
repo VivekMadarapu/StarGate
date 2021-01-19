@@ -66,14 +66,15 @@ namespace StarGate
                 //else
                 //    bound -= 5;
 
-                if(ship.isRight && newPad.Triggers.Left !=0 && ship.desRect.X>=400)
+                if(ship.isRight && newPad.Triggers.Left !=0)
                 {
                     bound +=5;
                 }
-                else if(newPad.Triggers.Left !=0 && ship.desRect.X<=400 && !ship.isRight)
+                else if(newPad.Triggers.Left !=0 && !ship.isRight)
                 { 
                     bound -= 5;
                 }
+                Console.WriteLine(ship.desRect.X);
                
             }
             if (bound < 0)

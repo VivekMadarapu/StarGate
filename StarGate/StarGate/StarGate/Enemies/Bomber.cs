@@ -16,8 +16,6 @@ namespace StarGate.Enemies
         public const int POINTS = 150;
         //texture
         public Texture2D tex;
-        //rectangle
-        public Rectangle sourceRect;
         //public List<Rectangle> sourceRects;
         public Rectangle desRect;
         int counter = 0;
@@ -39,7 +37,6 @@ namespace StarGate.Enemies
             //Rectangles
             desRect = new Rectangle(rand.Next(0, 5000 - SIZE), rand.Next(0, screenH / 2), SIZE, SIZE);
 
-            sourceRect = new Rectangle(tex.Width / 30 * (10), tex.Height / 29 * 10, tex.Width / 22, tex.Height / 25);
             //screen dimensions
             this.screenW = 800;
             this.screenH = 500;
@@ -52,7 +49,7 @@ namespace StarGate.Enemies
 
             if (isOnScreen())
             {
-                
+                desRect.Y--;
             }
             else
             {
@@ -69,7 +66,7 @@ namespace StarGate.Enemies
             return desRect.X >= 0 && desRect.Right <= screenW && desRect.Y >= 0 && desRect.Bottom <= screenH;
         }
 
-        public void relationalUpdate(Terrain terrain, SpaceShip ship, GamePadState newPad)//changes landers position in relation to the spaceship
+        public void relationalUpdate(Terrain terrain, SpaceShip ship, GamePadState newPad)
         {
             if (newPad.Triggers.Left != 0 && terrain.bound != 0 && terrain.bound != 4200)
             {
@@ -90,7 +87,7 @@ namespace StarGate.Enemies
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(tex, desRect, sourceRect, Color.White);
+            spriteBatch.Draw(tex, desRect, Color.White);
         }
 
     }
