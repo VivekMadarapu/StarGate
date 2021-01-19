@@ -55,7 +55,7 @@ namespace StarGate
             this.tex = tex;
 
             this.projectileTex = projectileTex;
-           // projectileTex.SetData(new Color[] { Color.White });
+            projectileTex.SetData(new Color[] { Color.White });
             //screen dimensions
             this.screenW = 800;
             this.screenH = screenH;
