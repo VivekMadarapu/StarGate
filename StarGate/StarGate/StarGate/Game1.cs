@@ -26,14 +26,13 @@ namespace StarGate
         GameScreen gameScreen;
 
         public static GameState gameState;
-        
+        //user interface
+        GamePadState oldPad;        
         //enemies
         Lander lander;
         private Bomber bomber;
-        
         //user interface
         GamePadState oldPad;
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -101,9 +100,9 @@ namespace StarGate
             // Allows the game to exit
             if (newPad.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            //test lander
+            
 
-            // lander.Update();
+            
             // TODO: Add your update logic here
             if (gameState == GameState.START_SCREEN) titleScreen.Update(graphics, newPad, oldPad);
 
@@ -135,6 +134,10 @@ namespace StarGate
             {
                 ship.Draw(spriteBatch);
                 terrain.Draw(spriteBatch, Color.White, GraphicsDevice.Viewport.Width);
+
+                
+           }
+
                 lander.Draw(spriteBatch);
                 bomber.Draw(spriteBatch);
             }
