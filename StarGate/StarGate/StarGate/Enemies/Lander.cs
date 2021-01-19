@@ -43,12 +43,11 @@ namespace StarGate.Enemies
         public Lander(Microsoft.Xna.Framework.Game game)
         {
             //tex
-            this.tex = tex;
+            this.tex = game.Content.Load<Texture2D>("starGateAllSprites");
             //screen dimensions
             this.screenW = 800;
             this.screenH = 500;
 
-            loadLanderImage(game);
             //Rectangles
             desRect = new Rectangle(rand.Next(0,5000-SIZE), rand.Next(0, screenH / 2), SIZE, SIZE);
           
@@ -59,10 +58,7 @@ namespace StarGate.Enemies
             transform = false;
 
         }
-        public  void loadLanderImage(Microsoft.Xna.Framework.Game game)
-        {
-            tex = game.Content.Load<Texture2D>("starGateAllSprites");
-        }
+        
         public void Update(/*List<Humanoid> humanoids,*/SpaceShip ship, GamePadState newPad, Terrain terrain)
         {
             //offcreen update
