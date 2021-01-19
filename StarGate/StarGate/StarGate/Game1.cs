@@ -30,7 +30,6 @@ namespace StarGate
         //user interface
         GamePadState oldPad;        
 
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -128,6 +127,7 @@ namespace StarGate
                 settingsScreen.Draw(spriteBatch);
             else if (gameState == GameState.GAME_SCREEN)
                 gameScreen.Draw(GraphicsDevice, spriteBatch);        
+
 
             spriteBatch.End();
 
