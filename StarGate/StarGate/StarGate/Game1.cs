@@ -26,12 +26,11 @@ namespace StarGate
 
         public static GameState gameState;
         //just for testing
-      // Enemies.Lander lander;
+        
         //user interface
         GamePadState oldPad;
   
         
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -73,7 +72,7 @@ namespace StarGate
             MousePointer.loadPointerImage(this);
             Button.loadContent(this);
            ship = new SpaceShip(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content.Load<Texture2D>("projectileTex"));
-          // lander = new Enemies.Lander(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+          
 
         }
 
@@ -109,7 +108,7 @@ namespace StarGate
             {
                 ship.Update(oldPad, newPad, terrain);
                 terrain.Update(newPad, ship, GraphicsDevice.Viewport.Width);
-               //lander.Update(ship, newPad, terrain);
+               
             }
 
             oldPad = newPad;
@@ -131,8 +130,8 @@ namespace StarGate
             {
                 ship.Draw(spriteBatch);
                 terrain.Draw(spriteBatch, Color.White, GraphicsDevice.Viewport.Width);
-               // lander.Draw(spriteBatch);
-            }
+                
+           }
 
            
 
