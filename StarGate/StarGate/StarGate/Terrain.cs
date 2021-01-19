@@ -74,7 +74,6 @@ namespace StarGate
                 { 
                     bound -= 5;
                 }
-                Console.WriteLine(ship.desRect.X);
                
             }
             if (bound < 0)

@@ -32,12 +32,12 @@ namespace StarGate
             bomber = new Bomber(game);
         }
 
-        public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad)
+        public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad, double gameTime)
         {
             ship.Update(oldPad, newPad, terrain);
             terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
             lander.Update(ship, newPad, terrain);
-            bomber.Update(ship, newPad, terrain);
+            bomber.Update(gameTime, ship, newPad, terrain);
         }
 
         public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)

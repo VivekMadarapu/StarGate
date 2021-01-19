@@ -88,18 +88,17 @@ namespace StarGate
             if ((terrain.bound == 0) || (terrain.bound>=4200/*-desRect.Width*/))
             {
                 if (newPad.Triggers.Left != 0)
-            {
-                if (isRight)
                 {
-                    desRect.X += SPEED;
-                }
-                else
-                {
-                    desRect.X -= SPEED;
+                    if (isRight)
+                    {
+                        desRect.X += SPEED;
+                    }
+                    else
+                    {
+                        desRect.X -= SPEED;
+                    }
                 }
             }
-          
-        }
 
             //thumbstick (up and down motion)
             if(newPad.ThumbSticks.Left.Y>0)
