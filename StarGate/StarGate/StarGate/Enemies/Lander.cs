@@ -40,10 +40,17 @@ namespace StarGate.Enemies
         Boolean hasHumanoid;
         Boolean transform;// if true, the lander needs to transform into a mutant
 
+        //projectiles
+        public List<Rectangle> projectileList = new List<Rectangle>();
+        public List<Vector2> projectileSpeeds = new List<Vector2>();
+        public int fire = 60;
+        public Texture2D projectileTex;
+
         public Lander(Microsoft.Xna.Framework.Game game)
         {
             //tex
             this.tex = game.Content.Load<Texture2D>("starGateAllSprites");
+            projectileTex = game.Content.Load<Texture2D>("projectileTex");
             //screen dimensions
             this.screenW = 800;
             this.screenH = 500;
@@ -60,6 +67,7 @@ namespace StarGate.Enemies
         }
         public void Update(/*List<Humanoid> humanoids,*/SpaceShip ship, GamePadState newPad, Terrain terrain)
         {
+            fire--;
             //offcreen update
             relationalUpdate(terrain, ship, newPad);
             if ((terrain.bound == 0) || (terrain.bound >= 4200/*-desRect.Width*/) )
@@ -115,8 +123,14 @@ namespace StarGate.Enemies
                     }
                 }
 
-                //sourceRect = sourceRects[counter];
-                //counter++;
+
+            //sourceRect = sourceRects[counter];
+            //counter++;
+
+            //projectiles
+            locateDefender(ship);
+            updateProjectiles();
+
             }
         
         public void relationalUpdate(Terrain terrain, SpaceShip ship, GamePadState newPad)//changes landers position in relation to the spaceship
@@ -127,17 +141,61 @@ namespace StarGate.Enemies
                 if (ship.isRight && ship.desRect.X==400)
                 {
                     if (terrain.bound < 4200)
+                    {
+                        for (int i = 0; i < projectileList.Count; i++)
+                        {
+                            projectileList[i] = new Rectangle(projectileList[i].X - 5, projectileList[i].Y, 2, 2);
+                        }
                         desRect.X -= SPEED;
+                    }
                 }
                 else
                 {
-                    if (terrain.bound > 0 && ship.desRect.X==400)
+                    if (terrain.bound > 0 && ship.desRect.X == 400)
+                    {
+                        for (int i = 0; i < projectileList.Count; i++)
+                        {
+                            projectileList[i] = new Rectangle(projectileList[i].X + 5, projectileList[i].Y, 2, 2);
+                        }
                         desRect.X += SPEED;
+                    }
                 }
             }
 
         }
+        public void locateDefender(SpaceShip ship)
+        {
+            double hyp = Math.Sqrt(Math.Pow(ship.desRect.X - desRect.X, 2) + Math.Pow(ship.desRect.Y - desRect.Y, 2));
+            if (fire == 0)
+            {
+                int DESIREDSPEED = 5;
+                int numUpdates = (int)(hyp / DESIREDSPEED);
+                double dx = (ship.desRect.X - desRect.X) / (double)numUpdates;
+                double dy = (ship.desRect.Y - desRect.Y) / (double)numUpdates;
+                projectileList.Add(new Rectangle(desRect.X + desRect.Width / 2, desRect.Y + desRect.Height / 2, 2, 2));
+                projectileSpeeds.Add(new Vector2((int)dx, (int)dy));
+                fire = rand.Next(200, 400);
 
+
+            }
+        }
+        public void updateProjectiles()
+        {
+            for (int i = 0; i < projectileList.Count; i++)
+            {
+                projectileList[i] = new Rectangle((int)(projectileList[i].X + projectileSpeeds[i].X), (int)(projectileList[i].Y + projectileSpeeds[i].Y), 2, 2);
+
+
+                if (projectileList[i].X >= screenW || projectileList[i].X <= 0 || projectileList[i].Y >= screenH || projectileList[i].Y <= 0)
+                {
+                    projectileList.RemoveAt(i);
+                    projectileSpeeds.RemoveAt(i);
+                    i--;
+                }
+
+            }
+
+        }
         public Boolean isOnScreen()
         {
             return desRect.X >= 0 && desRect.Right <= screenW && desRect.Y >= 0 && desRect.Bottom <= screenH;
@@ -165,6 +223,10 @@ namespace StarGate.Enemies
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(tex, desRect, sourceRect, Color.White);
+            for (int i = 0; i < projectileList.Count; i++)
+            {
+                spriteBatch.Draw(projectileTex, projectileList[i], Color.White);
+            }
         }
 
 
