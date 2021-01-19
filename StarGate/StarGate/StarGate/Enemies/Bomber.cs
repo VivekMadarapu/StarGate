@@ -30,10 +30,10 @@ namespace StarGate.Enemies
         public int screenW;
         public int screenH;
 
-        public Bomber(Texture2D tex)
+        public Bomber(Microsoft.Xna.Framework.Game game)
         {
             //tex
-            this.tex = tex;
+            this.tex = game.Content.Load<Texture2D>("firebomber");
             //Rectangles
             desRect = new Rectangle(100, rand.Next(10, 400), SIZE, SIZE);
 

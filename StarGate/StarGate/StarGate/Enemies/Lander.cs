@@ -40,7 +40,7 @@ namespace StarGate.Enemies
         Boolean hasHumanoid;
         Boolean transform;// if true, the lander needs to transform into a mutant
 
-        public Lander(Texture2D tex)
+        public Lander(Microsoft.Xna.Framework.Game game)
         {
             //tex
             this.tex = tex;
@@ -48,6 +48,7 @@ namespace StarGate.Enemies
             this.screenW = 800;
             this.screenH = 500;
 
+            loadLanderImage(game);
             //Rectangles
             desRect = new Rectangle(rand.Next(0,5000-SIZE), rand.Next(0, screenH / 2), SIZE, SIZE);
           
@@ -57,6 +58,10 @@ namespace StarGate.Enemies
             hasHumanoid = false;
             transform = false;
 
+        }
+        public  void loadLanderImage(Microsoft.Xna.Framework.Game game)
+        {
+            tex = game.Content.Load<Texture2D>("starGateAllSprites");
         }
         public void Update(/*List<Humanoid> humanoids,*/SpaceShip ship, GamePadState newPad, Terrain terrain)
         {
