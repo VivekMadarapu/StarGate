@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using StarGate.Enemies;
 
 namespace StarGate
 {
@@ -25,12 +26,13 @@ namespace StarGate
         GameScreen gameScreen;
 
         public static GameState gameState;
-        //just for testing
-      // Enemies.Lander lander;
+        
+        //enemies
+        Lander lander;
+        private Bomber bomber;
+        
         //user interface
         GamePadState oldPad;
-  
-        
 
         public Game1()
         {
@@ -73,7 +75,8 @@ namespace StarGate
             MousePointer.loadPointerImage(this);
             Button.loadContent(this);
            ship = new SpaceShip(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content.Load<Texture2D>("projectileTex"));
-          // lander = new Enemies.Lander(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+           lander = new Lander(Content.Load<Texture2D>("starGateAllSprites"));
+           bomber = new Bomber(Content.Load<Texture2D>("starGateAllSprites"));
 
         }
 
@@ -109,7 +112,8 @@ namespace StarGate
             {
                 ship.Update(oldPad, newPad, terrain);
                 terrain.Update(newPad, ship, GraphicsDevice.Viewport.Width);
-               //lander.Update(ship, newPad, terrain);
+                lander.Update(ship, newPad, terrain);
+                bomber.Update(ship, newPad, terrain);
             }
 
             oldPad = newPad;
@@ -131,10 +135,9 @@ namespace StarGate
             {
                 ship.Draw(spriteBatch);
                 terrain.Draw(spriteBatch, Color.White, GraphicsDevice.Viewport.Width);
-               // lander.Draw(spriteBatch);
+                lander.Draw(spriteBatch);
+                bomber.Draw(spriteBatch);
             }
-
-           
 
             spriteBatch.End();
 
