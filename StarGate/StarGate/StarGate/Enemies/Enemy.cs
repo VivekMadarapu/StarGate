@@ -13,6 +13,6 @@ namespace StarGate.Enemies
 {
     class Enemy
     {
-
+        
     }
 }
