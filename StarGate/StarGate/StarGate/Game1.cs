@@ -76,7 +76,7 @@ namespace StarGate
             Button.loadContent(this);
            ship = new SpaceShip(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content.Load<Texture2D>("projectileTex"));
            lander = new Lander(Content.Load<Texture2D>("starGateAllSprites"));
-           bomber = new Bomber(Content.Load<Texture2D>("starGateAllSprites"));
+           bomber = new Bomber(Content.Load<Texture2D>("firebomber"));
 
         }
 
