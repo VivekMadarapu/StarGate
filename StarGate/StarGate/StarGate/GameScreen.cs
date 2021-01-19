@@ -18,6 +18,7 @@ namespace StarGate
         Terrain terrain;
         Lander lander;
         Bomber bomber;
+        Mutant mutant;
 
 
         public void initializeGameObjects(Microsoft.Xna.Framework.Game game)
@@ -30,14 +31,16 @@ namespace StarGate
 
             lander = new Lander(game);
             bomber = new Bomber(game);
+            mutant = new Mutant(new Rectangle(100,100,50,50), game);
         }
 
-        public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad, double gameTime)
+        public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad)
         {
             ship.Update(oldPad, newPad, terrain);
             terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
             lander.Update(ship, newPad, terrain);
-            bomber.Update(gameTime, ship, newPad, terrain);
+            bomber.Update(ship, newPad, terrain);
+            mutant.Update(ship, newPad, terrain);
         }
 
         public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
@@ -46,6 +49,7 @@ namespace StarGate
             terrain.Draw(spriteBatch, Color.White, graphicsDevice.Viewport.Width);
             lander.Draw(spriteBatch);
             bomber.Draw(spriteBatch);
+            mutant.Draw(spriteBatch);
         }
     }
 }
