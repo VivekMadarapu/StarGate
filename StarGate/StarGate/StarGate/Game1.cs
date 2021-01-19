@@ -32,7 +32,6 @@ namespace StarGate
         Lander lander;
         private Bomber bomber;
         //user interface
-        GamePadState oldPad;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -74,7 +73,7 @@ namespace StarGate
             MousePointer.loadPointerImage(this);
             Button.loadContent(this);
            ship = new SpaceShip(Content.Load<Texture2D>("starGateAllSprites"), GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content.Load<Texture2D>("projectileTex"));
-           lander = new Lander(Content.Load<Texture2D>("starGateAllSprites"));
+           lander = new Lander(this);
            bomber = new Bomber(Content.Load<Texture2D>("firebomber"));
 
         }
@@ -140,7 +139,7 @@ namespace StarGate
 
                 lander.Draw(spriteBatch);
                 bomber.Draw(spriteBatch);
-            }
+            
 
             spriteBatch.End();
 
