@@ -31,7 +31,7 @@ namespace StarGate
 
             lander = new Lander(game);
             bomber = new Bomber(game);
-            mutant = new Mutant(new Rectangle(100,100,50,50), game);
+            mutant = new Mutant(new Rectangle(100,100,30,30), game);
         }
 
         public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad, double gameTime)
