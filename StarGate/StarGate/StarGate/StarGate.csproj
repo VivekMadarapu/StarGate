@@ -64,6 +64,7 @@
     <Compile Include="Enemies\Mutant.cs" />
     <Compile Include="Fireball.cs" />
     <Compile Include="GameScreen.cs" />
+    <Compile Include="HumanoidCarryer.cs" />
     <Compile Include="Humanoids.cs" />
     <Compile Include="MousePointer.cs" />
     <Compile Include="Projectile.cs" />

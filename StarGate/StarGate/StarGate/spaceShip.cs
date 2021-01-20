@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 namespace StarGate
 {
   
-    class SpaceShip
+    class SpaceShip : HumanoidCarryer
     {
         //textures
         public Texture2D tex;
@@ -47,7 +47,16 @@ namespace StarGate
         public Boolean isCloaked;
 
         public int smartBombs = 3;
-           
+
+        //humanoids
+        public Humanoid humanoid;
+        Rectangle HumanoidCarryer.desRect
+        {
+            get
+            {
+                return desRect;
+            }
+        }
 
         public SpaceShip(Texture2D tex, int screenW,int screenH, Texture2D projectileTex)
         {
@@ -76,6 +85,13 @@ namespace StarGate
             projectileCooldown = 21;
 
         }
+
+        public void addHumanoid(Humanoid humanoid)
+        {
+            this.humanoid = humanoid;
+            humanoid.setCarryer(this);
+        }
+
         public void Update(GamePadState oldPad, GamePadState newPad, Terrain terrain)
         {
 
@@ -84,6 +100,13 @@ namespace StarGate
             {
                 isRight = !isRight;
             }
+
+            if (humanoid != null && newPad.Buttons.B == ButtonState.Pressed)
+            {
+                humanoid.setCarryer(null);
+                humanoid = null;
+            }
+
             //thrust
             if ((terrain.bound == 0) || (terrain.bound>=4200/*-desRect.Width*/))
             {
