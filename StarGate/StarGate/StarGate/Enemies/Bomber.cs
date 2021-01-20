@@ -23,8 +23,6 @@ namespace StarGate.Enemies
         int counter = 0;
         float elapsedTime = 0;
         private int oldSec;
-        int directionX = 1; 
-        int directionY = 1; 
 
         //fireballs
         public List<Fireball> fireballs;
@@ -33,7 +31,9 @@ namespace StarGate.Enemies
         public const int SIZE = 26;
         public const int SPEED = 5;
         //random
-        public Random rand = new Random();
+        public Random rand;
+        public int switchDirectionTime = 0;
+        public Vector2 speed;
 
         //screen dimensions
         public int screenW;
@@ -48,15 +48,19 @@ namespace StarGate.Enemies
             this.tex = game.Content.Load<Texture2D>("firebomber");
             this.fireballTex = game.Content.Load<Texture2D>("bomb");
             //Rectangles
-            desRect = new Rectangle(100, r.Next(100, 400), SIZE, SIZE);
+            desRect = new Rectangle(r.Next(100, 5000), r.Next(100, 400), SIZE, SIZE);
 
             fireballs = new List<Fireball>();
+
+            rand = r;
 
             //screen dimensions
             this.screenW = 800;
             this.screenH = 500;
 
-            fireTimer = 60;
+            speed = new Vector2(2, 2);
+
+            fireTimer = 120;
         }
 
         public void Update(double gameTime, SpaceShip ship, GamePadState newPad, Terrain terrain)
@@ -64,50 +68,49 @@ namespace StarGate.Enemies
             //offcreen update
             relationalUpdate(terrain, ship, newPad);
 
-            elapsedTime += (float)gameTime;
-            if (elapsedTime > 1)
-            { 
-                elapsedTime -= 1;
-                directionX = rand.Next(0, 2); 
-                rand = new Random();
-                directionY = rand.Next(0, 2); 
+            if (switchDirectionTime == 0)
+            {
+                switchDirectionTime = rand.Next(30, 120);
+                int x = rand.Next(1, 101);
+                int y = rand.Next(1, 101);
+                if (x > 50)
+                    speed.X *= -1;
+                if (y > 50)
+                    speed.Y *= -1;
+            }
+            else
+            {
+                switchDirectionTime--;
             }
 
-            if (directionX == 0)
-            {
-                desRect.X -= 2;
-            }
-            else if (directionX == 1)
-            {
-                desRect.X += 2;
-            }
-
-            if (directionY == 0 && desRect.Y > 2)
-            {
-                desRect.Y -= 2;
-            }
-            else if(directionY == 1 && desRect.Y < 498)
-            {
-                desRect.Y += 2;
-            }
-
-            if (fireTimer == 0)
+            if (fireTimer <= 0 && isOnScreen())
             {
                 fireballs.Add(new Fireball(fireballTex, this, ship));
-                fireTimer = 60;
+                fireTimer = 120;
             }
-            Console.WriteLine(oldSec + " " + gameTime);
+            
 
             for (int i = 0; i < fireballs.Count; i++)
             {
                 fireballs[i].Update(ship, newPad, terrain);
             }
 
-
             rotation += 0.2f;
             fireTimer--;
-            //sourceRect = sourceRects[counter];
-            //counter++;
+
+            if (desRect.Right >= screenW)
+                speed.X *= -1;
+            else if (desRect.Left <= 0)
+                speed.X *= -1; ;
+
+            if (desRect.Y >= screenH - desRect.Height)
+                speed.Y *= -1;
+            else if (desRect.Y <= 0)
+                speed.Y *= -1;
+
+            desRect.X += (int)speed.X;
+            desRect.Y += (int)speed.Y;
+
         }
 
         public Boolean isOnScreen()
@@ -120,14 +123,14 @@ namespace StarGate.Enemies
             if (newPad.Triggers.Left != 0 && terrain.bound != 0 && terrain.bound != 4200)
             {
 
-                if (ship.isRight)
+                if (ship.isRight && ship.desRect.X == 400)
                 {
                     if (terrain.bound < 4200)
                         desRect.X -= SPEED;
                 }
                 else
                 {
-                    if (terrain.bound > 0)
+                    if (terrain.bound > 0 && ship.desRect.X == 400)
                         desRect.X += SPEED;
                 }
             }
