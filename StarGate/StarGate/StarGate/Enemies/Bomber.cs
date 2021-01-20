@@ -41,13 +41,14 @@ namespace StarGate.Enemies
 
         private int fireTimer;
 
-        public Bomber(Microsoft.Xna.Framework.Game game)
+
+        public Bomber(Microsoft.Xna.Framework.Game game, Random r)
         {
             //tex
             this.tex = game.Content.Load<Texture2D>("firebomber");
             this.fireballTex = game.Content.Load<Texture2D>("bomb");
             //Rectangles
-            desRect = new Rectangle(100, rand.Next(100, 400), SIZE, SIZE);
+            desRect = new Rectangle(100, r.Next(100, 400), SIZE, SIZE);
 
             fireballs = new List<Fireball>();
 

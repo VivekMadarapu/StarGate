@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 namespace StarGate.Enemies 
 {
 
-    class Lander : Enemy 
+    class Lander : Enemy, HumanoidCarryer
     {
         //use later for scoring
         public const int POINTS = 150;
@@ -24,11 +24,11 @@ namespace StarGate.Enemies
         //public List<Rectangle> sourceRects;
         public Rectangle desRect;
         int counter = 0;
-        //direction
-        //public Boolean isRight;
+    
         //speed/dimensions
         public const int SIZE = 30;
         public const int SPEED = 5;
+        public Vector2 landerSpeed;
         //random
         public Random rand = new Random();
 
@@ -37,8 +37,8 @@ namespace StarGate.Enemies
         public int screenH;
 
         //booleans
-        Boolean hasHumanoid;
-        Boolean transform;// if true, the lander needs to transform into a mutant
+        public Boolean hasHumanoid;
+        public Boolean transform;// if true, the lander needs to transform into a mutant
 
         //projectiles
         public List<Rectangle> projectileList = new List<Rectangle>();
@@ -46,7 +46,20 @@ namespace StarGate.Enemies
         public int fire = 60;
         public Texture2D projectileTex;
 
-        public Lander(Microsoft.Xna.Framework.Game game)
+        //humanoids
+       public  Humanoid caughtHumanoid = null;
+        public int humanTarget;
+        Rectangle HumanoidCarryer.desRect
+        {
+            get
+            {
+                return desRect;
+            }
+        }
+
+
+
+        public Lander(Microsoft.Xna.Framework.Game game, Random r)
         {
             //tex
             this.tex = game.Content.Load<Texture2D>("starGateAllSprites");
@@ -54,82 +67,111 @@ namespace StarGate.Enemies
             //screen dimensions
             this.screenW = 800;
             this.screenH = 500;
+            //speed
+            landerSpeed = new Vector2(5, 0);
 
             //Rectangles
-            desRect = new Rectangle(rand.Next(0,5000-SIZE), rand.Next(0, screenH / 2), SIZE, SIZE);
+            desRect = new Rectangle(r.Next(0,5000-SIZE), r.Next(0, screenH / 2), SIZE, SIZE);
           
             sourceRect = new Rectangle(tex.Width / 30 * (10), tex.Height / 29 * 10, tex.Width / 22, tex.Height / 25);
             
             //humanoid interaction
-            hasHumanoid = false;
+             hasHumanoid = false;
             transform = false;
+             humanTarget = -1;
+
 
         }
-        public void Update(/*List<Humanoid> humanoids,*/SpaceShip ship, GamePadState newPad, Terrain terrain)
+        public void Update(List<Humanoid> humanoids,SpaceShip ship, GamePadState newPad, Terrain terrain)
         {
             fire--;
             //offcreen update
             relationalUpdate(terrain, ship, newPad);
-            if ((terrain.bound == 0) || (terrain.bound >= 4200/*-desRect.Width*/) )
-            {
+            //if ((terrain.bound == 0) || (terrain.bound >= 4200) )
+            //{
                 
-                if (newPad.Triggers.Left != 0 && ship.desRect.X==400)
+            //    if (newPad.Triggers.Left != 0 && ship.desRect.X==400)
+            //    {
+            //        if (ship.isRight)
+            //        {
+            //            desRect.X += SPEED;
+            //        }
+            //        else
+            //        {
+            //            desRect.X -= SPEED;
+            //        }
+            //    }
+            //}
+            if (!hasHumanoid && !transform && isOnScreen())
+            {
+                if (humanTarget == -1)
                 {
-                    if (ship.isRight)
-                    {
-                        desRect.X += SPEED;
-                    }
-                    else
-                    {
-                        desRect.X -= SPEED;
-                    }
+                    locateHumanoid(humanoids);
+                }
+                else if (humanoids[humanTarget].caught || !(humanoids[humanTarget].alive))
+                {
+                    humanTarget = -1;
+                }
+                else
+                {
+                    desRect.X += (int)landerSpeed.X;
+                    desRect.Y += (int)landerSpeed.Y;
+                    catchHumanoid(humanoids);
                 }
             }
+            else if(hasHumanoid && !transform)
+            {
+                if (desRect.Y <= 0)
+                    transform = true;
+                desRect.Y -= 1;
+            }
+             
+            
+           
+                //if (isOnScreen() && !hasHumanoid && !transform)
+                //{
+                //    int humanTarget = locateHumanoid(humanoids);
+                //      if(humanoids[humanTarget].rect.X>=desRect.X+5)
+                //      {
+                //        desRect.X+=SPEED;
+                //       }
+                //       else if(humanoids[humanTarget].x<=desRect.X-5)
+                //       {
+                //        desRect.X-=SPEED;
+                //        }
 
-                if (isOnScreen() && !hasHumanoid && !transform)
-                {
-                    /*int humanTarget = locateHumanoid(humanoids);
-                     * if(humanoids[humanTarget].rect.X>=desRect.X+5)
-                     * {
-                     *   desRect.X+=SPEED;
-                       }
-                       else if(humanoids[humanTarget].rect.X<=desRect.X-5)
-                       {
-                        desRect.X-=SPEED;
-                        }
+                //      if(humanoids[humanTarget].y>=desRect.Y+5)
+                //      {
+                //        desRect.Y+=SPEED;
+                //       }
+                //       else if(humanoids[humanTarget].y<=desRect.X-5)
+                //       {
+                //        desRect.Y-=SPEED;
+                //        }
 
-                     * if(humanoids[humanTarget].rect.Y>=desRect.Y+5)
-                     * {
-                     *   desRect.Y+=SPEED;
-                       }
-                       else if(humanoids[humanTarget].rect.Y<=desRect.X-5)
-                       {
-                        desRect.Y-=SPEED;
-                        }
+                //      if(Math.Sqrt(Math.Pow(desRect.X-humanoids[humanTarget].rect.X,2) + Math.Pow(desRect.Y-humanoids[humanTarget].rect.Y,2))<=5);
+                //        hasHumanoid=true;
 
-                      if(Math.Sqrt(Math.Pow(desRect.X-humanoids[humanTarget].rect.X,2) + Math.Pow(desRect.Y-humanoids[humanTarget].rect.Y,2))<=5);
-                        hasHumanoid=true;
-
-                     **/
-
-
-                }
-                else if (hasHumanoid && !transform)
-                {
-                    desRect.Y -= SPEED / 2;
-                    if (desRect.Y <= 0)
-                    {
-                        transform = true;
-                    }
-                }
+                     
 
 
-            //sourceRect = sourceRects[counter];
-            //counter++;
+                //}
+                //else if (hasHumanoid && !transform)
+                //{
+                //    desRect.Y -= SPEED / 2;
+                //    if (desRect.Y <= 0)
+                //    {
+                //        transform = true;
+                //    }
+                //}
+
+
 
             //projectiles
             locateDefender(ship);
             updateProjectiles();
+            //dimensions
+            keepLanderOnScreen(terrain, humanoids);
 
             }
         
@@ -200,26 +242,82 @@ namespace StarGate.Enemies
         {
             return desRect.X >= 0 && desRect.Right <= screenW && desRect.Y >= 0 && desRect.Bottom <= screenH;
         }
-        //public int locateHumanoid(List<Humanoid>humanoids)
-        //{
-        //    //double minDistance = Math.Sqrt(Math.Pow(rect.X-humanoids[0].rect.X,2) + Math.Pow(rect.Y-humanoids[0].rect.Y,2));
-        //    /*
-        //     * int minIndex = 0
-        //     * for(int i=1; i<humanoids.Count; i++)
-        //     * {
-        //        //make sure to check if humanoid is already attatched to another lander
-        //     *    double check =  Math.Sqrt(Math.Pow(rect.X-humanoids[i].rect.X,2) + Math.Pow(rect.Y-humanoids[i].rect.Y,2));
-        //     *    if(check<minDistance)
-        //     *    {
-        //     *    minDistance = check;
-        //     *    minIndex = i;
-        //     *    }
+        public void locateHumanoid(List<Humanoid> humanoids)
+        {
+            double minDistance =  -1;
+            int minIndex = -1;
+            if (humanoids.Count > 0 && !(humanoids[0].caught))
+            {
+                minDistance = Math.Sqrt(Math.Pow(desRect.X - humanoids[0].x, 2) + Math.Pow(desRect.Y - humanoids[0].y, 2));
+                minIndex = 0;
+            }
+            if (minIndex != -1)
+            {
+                for (int i = 1; i < humanoids.Count; i++)
+                {
+                    double temp = Math.Sqrt(Math.Pow(desRect.X - humanoids[i].x, 2) + Math.Pow(desRect.Y - humanoids[i].y, 2));
+                    if (temp < minDistance && !(humanoids[i].caught))
+                    {
+                        minDistance = temp;
+                        minIndex = i;
+                    }
+                }
+            }
+            if(minIndex!=-1)
+            {
+                int DESIREDSPEED = 2;
+                int numUpdates = (int)(minDistance / DESIREDSPEED);
+                double dx = (humanoids[minIndex].x - desRect.X) / (double)numUpdates;
+                double dy = (humanoids[minIndex].y - desRect.Y) / (double)numUpdates;
+                landerSpeed = new Vector2((float)dx,(float)dy);
+                humanTarget = minIndex; 
+            }
+         
 
-        //     }
-        //     */
-        //return minIndex;
-        //}
 
+            minIndex = humanTarget;
+        }
+        public Boolean catchHumanoid(List<Humanoid> humanoids)
+        {
+            for(int i=0; i<humanoids.Count; i++)
+            {
+                if(desRect.Intersects(new Rectangle(humanoids[i].x, humanoids[i].y, 25,25)) && !humanoids[i].caught)
+                {
+                    humanoids[i].caught = true;
+                    hasHumanoid = true;
+                    humanoids[i].setCarryer(this);
+                    caughtHumanoid = humanoids[i];
+                    return true;
+                }
+            
+            }
+            return false;
+        }
+        public void keepLanderOnScreen(Terrain terrain, List<Humanoid>humanoids)
+        {
+
+            if (desRect.Right >= screenW && terrain.bound == 4200)
+            {
+                landerSpeed.X *= -1;
+                locateHumanoid(humanoids);
+            }
+            else if (desRect.Left <= 0 && terrain.bound == 0)
+            {
+                landerSpeed.X *= -1; ;
+                locateHumanoid(humanoids);
+            }
+
+            if (desRect.Y >= screenH - desRect.Height)
+            {
+                landerSpeed.Y *= -1;
+                locateHumanoid(humanoids);
+            }
+            else if (desRect.Y <= 0)
+            {
+                landerSpeed.Y *= -1;
+                locateHumanoid(humanoids);
+            }
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(tex, desRect, sourceRect, Color.White);

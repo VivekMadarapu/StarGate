@@ -25,7 +25,7 @@ namespace StarGate
         public int spriteNumber;
         public int distanceFallen;
         int counter = 0;
-        int x, y;
+        public int x, y;
 
         public Humanoid(GraphicsDevice graphics, Terrain terrain, HumanoidCarryer carryer)
         {
@@ -36,8 +36,9 @@ namespace StarGate
             alive = true;
             distanceFallen = 0;
 
-            x = random.Next(10, graphics.Viewport.Width - 20);
-            y = random.Next(terrain.terrainContour[x] + 5, graphics.Viewport.Height - 30);
+            x = random.Next(10, 4190);
+            //x = random.Next(10, graphics.Viewport.Width - 20);
+            y = random.Next(terrain.terrainContour[x] + 5, graphics.Viewport.Height - 5);
         }
 
         public void setCarryer(HumanoidCarryer carryer)
@@ -61,10 +62,10 @@ namespace StarGate
                 y = carryer.desRect.Top + 15;
                 spriteNumber = 0;
             }
-            else if (y < terrain.terrainContour[terrain.bound + x])
+            else if (y < terrain.terrainContour[Math.Abs(terrain.bound + x)])
             {
-                y += 3;
-                distanceFallen += 3;
+                y += 1;
+                distanceFallen += 1;
             }
             else
             {
@@ -76,7 +77,7 @@ namespace StarGate
                     int xChange = random.Next(-1, 2) * 3;
                     int yChange = random.Next(-1, 2) * 3;
                     if (!(terrain.bound == 0 && x + xChange <= 10 || terrain.bound == 4200 && x + xChange <= graphics.Viewport.Width - 30)) x += xChange;
-                    if (y + yChange >= terrain.terrainContour[terrain.bound + x] + 5 && y + yChange <= graphics.Viewport.Height - 15) y += yChange;
+                    if (y + yChange >= terrain.terrainContour[Math.Abs(terrain.bound + x)] + 5 && y + yChange <= graphics.Viewport.Height - 15) y += yChange;
                     spriteNumber = (spriteNumber + 1) % 3;
                     if (xChange < 0 && facingRight || xChange > 0 && !facingRight) facingRight = !facingRight;
                 }
