@@ -137,7 +137,6 @@ namespace StarGate
 
                         if (ship.projectileList[i].hits(l.desRect)) 
                         {
-
                             if (l.caughtHumanoid != null) l.caughtHumanoid.setCarryer(null);
                             enemies.RemoveAt(r);
                             r--;
