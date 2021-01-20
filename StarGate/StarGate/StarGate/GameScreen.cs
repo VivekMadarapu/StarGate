@@ -57,9 +57,9 @@ namespace StarGate
             {
                 enemies.Add(new Lander(game,r));
             }
-            for(int i=0; i<5; i++)
+            for(int i=0; i<15; i++)
             {
-                enemies.Add(new Bomber(game, r));
+                enemies.Add(new Bomber(game, new Random(i*345)));
             }
             
             //humnoids
@@ -108,12 +108,11 @@ namespace StarGate
 
                     }
 
-
-
                 }
                 else if (a.Equals(bomber))
                 {
                     Bomber b = (Bomber)(enemies[i]);
+                    b.rand = new Random(b.desRect.X);
                     b.Update(gameTime, ship, newPad, terrain);
                     enemies[i] = b;
                 }
@@ -137,7 +136,6 @@ namespace StarGate
 
                         if (ship.projectileList[i].hits(l.desRect)) 
                         {
-
                             l.caughtHumanoid.setCarryer(null);
                             enemies.RemoveAt(r);
                             r--;
@@ -163,12 +161,7 @@ namespace StarGate
                         }
                     }
 
-
-
                 }
-
-
-
             }
         }
 
