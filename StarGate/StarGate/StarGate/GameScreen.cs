@@ -34,7 +34,8 @@ namespace StarGate
 
             lander = new Lander(game);
             bomber = new Bomber(game);
-            mutant = new Mutant(new Rectangle(100,100,50,50), game);
+
+            mutant = new Mutant(new Rectangle(100,100,30,30), game);
 
             Humanoid.loadContent(game);
             humanoid = new Humanoid(game.GraphicsDevice, terrain, ship);
