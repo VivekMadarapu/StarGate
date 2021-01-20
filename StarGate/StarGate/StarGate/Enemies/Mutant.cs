@@ -14,7 +14,7 @@ using System.Text;
 
 namespace StarGate.Enemies
 {
-    class Mutant
+    class Mutant:Enemy
     {
 
         //use later for scoring
@@ -43,12 +43,14 @@ namespace StarGate.Enemies
         //screen dimensions
         public int screenW;
         public int screenH;
+
         public Mutant(Rectangle desRect, Microsoft.Xna.Framework.Game game)
         {
             //texture
             tex = game.Content.Load<Texture2D>("starGateAllSprites");
             //Rectangles
             this.desRect = desRect;
+            desRect.Y = 5; 
             //sourceRect
             sourceRect = new Rectangle(0,0, tex.Width / 33, (tex.Height / 2) / 15);
             //screendimension
