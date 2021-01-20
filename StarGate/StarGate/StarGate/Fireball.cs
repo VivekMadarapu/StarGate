@@ -67,14 +67,15 @@ namespace StarGate
         {
             if (newPad.Triggers.Left != 0 && terrain.bound != 0 && terrain.bound != 4200)
             {
-                if (ship.isRight)
+
+                if (ship.isRight && ship.desRect.X == 400)
                 {
                     if (terrain.bound < 4200)
                         desRect.X -= 5;
                 }
                 else
                 {
-                    if (terrain.bound > 0)
+                    if (terrain.bound > 0 && ship.desRect.X == 400)
                         desRect.X += 5;
                 }
             }
