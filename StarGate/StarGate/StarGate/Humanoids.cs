@@ -26,6 +26,8 @@ namespace StarGate
         public int distanceFallen;
         int counter = 0;
         public int x, y;
+        public Rectangle container;
+        public bool droppedByHumanoids;
 
         public Humanoid(GraphicsDevice graphics, Terrain terrain, HumanoidCarryer carryer)
         {
@@ -35,10 +37,13 @@ namespace StarGate
             spriteNumber = 0;
             alive = true;
             distanceFallen = 0;
+            droppedByHumanoids = false;
 
             x = random.Next(10, 4190);
             //x = random.Next(10, graphics.Viewport.Width - 20);
-            y = random.Next(terrain.terrainContour[x] + 5, graphics.Viewport.Height - 5);
+            y = random.Next(terrain.terrainContour[x] + 5, graphics.Viewport.Height - 10);
+
+            container = new Rectangle(x, y, 25, 25);
         }
 
         public void setCarryer(HumanoidCarryer carryer)
@@ -61,6 +66,7 @@ namespace StarGate
                 x = carryer.desRect.X + 3;
                 y = carryer.desRect.Top + 15;
                 spriteNumber = 0;
+                distanceFallen = 0;
             }
             else if (y < terrain.terrainContour[Math.Abs(terrain.bound + x)])
             {
@@ -69,6 +75,7 @@ namespace StarGate
             }
             else
             {
+                droppedByHumanoids = false;
                 if (distanceFallen > 50) alive = false;
                 distanceFallen = 0;
 
@@ -83,6 +90,9 @@ namespace StarGate
                 }
                 counter++;
             }
+
+            container.X = x;
+            container.Y = y;
         }
 
         public void relationalUpdate(Terrain terrain, SpaceShip ship, GamePadState newPad)//changes landers position in relation to the spaceship
@@ -109,7 +119,7 @@ namespace StarGate
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (alive) spriteBatch.Draw(humanoidTex, new Rectangle(x, y, 25, 25), new Rectangle(((facingRight) ? 3 + spriteNumber : spriteNumber) * 15, 0, 15, 15), Color.White);
+            if (alive) spriteBatch.Draw(humanoidTex, container, new Rectangle(((facingRight) ? 3 + spriteNumber : spriteNumber) * 15, 0, 15, 15), Color.White);
         } 
     }
 }
