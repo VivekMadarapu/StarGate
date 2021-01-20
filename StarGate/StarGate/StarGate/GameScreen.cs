@@ -35,6 +35,9 @@ namespace StarGate
         Boolean isWon = false;
         Boolean isLost = false;
 
+        //score
+        public int score;
+
 
         public void initializeGameObjects(Microsoft.Xna.Framework.Game game)
         {
@@ -137,8 +140,11 @@ namespace StarGate
 
                         if (ship.projectileList[i].hits(l.desRect)) 
                         {
-
-                            l.caughtHumanoid.setCarryer(null);
+                            if (l.hasHumanoid)
+                            {
+                                l.caughtHumanoid.setCarryer(null);
+                            }
+                            score += Lander.POINTS;
                             enemies.RemoveAt(r);
                             r--;
                         }
@@ -149,6 +155,7 @@ namespace StarGate
 
                         if (ship.projectileList[i].hits(b.desRect))
                         {
+                            score += Bomber.POINTS;
                             enemies.RemoveAt(r);
                             r--;
                         }
@@ -158,6 +165,7 @@ namespace StarGate
                         Mutant m = (Mutant)(enemies[r]);
                         if (ship.projectileList[i].hits(m.desRect))
                         {
+                            score += Mutant.POINTS;
                             enemies.RemoveAt(r);
                             r--;
                         }

@@ -37,7 +37,7 @@ namespace StarGate
             distanceFallen = 0;
 
             x = random.Next(10, 4190);
-            //x = random.Next(10, graphics.Viewport.Width - 20);
+
             y = random.Next(terrain.terrainContour[x] + 5, graphics.Viewport.Height - 5);
         }
 
