@@ -87,22 +87,8 @@ namespace StarGate.Enemies
             fire--;
             //offcreen update
             relationalUpdate(terrain, ship, newPad);
-            //if ((terrain.bound == 0) || (terrain.bound >= 4200) )
-            //{
-                
-            //    if (newPad.Triggers.Left != 0 && ship.desRect.X==400)
-            //    {
-            //        if (ship.isRight)
-            //        {
-            //            desRect.X += SPEED;
-            //        }
-            //        else
-            //        {
-            //            desRect.X -= SPEED;
-            //        }
-            //    }
-            //}
-            if (!hasHumanoid && !transform && isOnScreen())
+     
+            if (!hasHumanoid && !transform /*&& isOnScreen()*/)
             {
                 if (humanTarget == -1)
                 {
@@ -127,44 +113,7 @@ namespace StarGate.Enemies
             }
              
             
-           
-                //if (isOnScreen() && !hasHumanoid && !transform)
-                //{
-                //    int humanTarget = locateHumanoid(humanoids);
-                //      if(humanoids[humanTarget].rect.X>=desRect.X+5)
-                //      {
-                //        desRect.X+=SPEED;
-                //       }
-                //       else if(humanoids[humanTarget].x<=desRect.X-5)
-                //       {
-                //        desRect.X-=SPEED;
-                //        }
-
-                //      if(humanoids[humanTarget].y>=desRect.Y+5)
-                //      {
-                //        desRect.Y+=SPEED;
-                //       }
-                //       else if(humanoids[humanTarget].y<=desRect.X-5)
-                //       {
-                //        desRect.Y-=SPEED;
-                //        }
-
-                //      if(Math.Sqrt(Math.Pow(desRect.X-humanoids[humanTarget].rect.X,2) + Math.Pow(desRect.Y-humanoids[humanTarget].rect.Y,2))<=5);
-                //        hasHumanoid=true;
-
-                     
-
-
-                //}
-                //else if (hasHumanoid && !transform)
-                //{
-                //    desRect.Y -= SPEED / 2;
-                //    if (desRect.Y <= 0)
-                //    {
-                //        transform = true;
-                //    }
-                //}
-
+      
 
 
             //projectiles
@@ -298,12 +247,15 @@ namespace StarGate.Enemies
 
             if (desRect.Right >= screenW && terrain.bound == 4200)
             {
+                if(landerSpeed.X>0)
                 landerSpeed.X *= -1;
                 locateHumanoid(humanoids);
             }
             else if (desRect.Left <= 0 && terrain.bound == 0)
             {
+                if(landerSpeed.X<0)
                 landerSpeed.X *= -1; ;
+                desRect.X = 2;
                 locateHumanoid(humanoids);
             }
 

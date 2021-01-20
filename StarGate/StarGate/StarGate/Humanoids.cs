@@ -40,11 +40,16 @@ namespace StarGate
             droppedByHumanoids = false;
 
             x = random.Next(10, 4190);
+
+
+          
+
             //x = random.Next(10, graphics.Viewport.Width - 20);
             y = random.Next(Math.Min(terrain.terrainContour[x] + 5, graphics.Viewport.Height - 10),
                 Math.Max(terrain.terrainContour[x] + 5, graphics.Viewport.Height - 10));
 
             container = new Rectangle(x, y, 25, 25);
+
         }
 
         public void setCarryer(HumanoidCarryer carryer)
