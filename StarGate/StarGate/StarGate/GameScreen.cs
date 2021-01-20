@@ -138,7 +138,7 @@ namespace StarGate
                         if (ship.projectileList[i].hits(l.desRect)) 
                         {
 
-                            l.caughtHumanoid.setCarryer(null);
+                            if (l.caughtHumanoid != null) l.caughtHumanoid.setCarryer(null);
                             enemies.RemoveAt(r);
                             r--;
                         }
@@ -162,13 +162,17 @@ namespace StarGate
                             r--;
                         }
                     }
-
-
-
                 }
+            }
 
-
-
+            //check if spaceship catches humanoids
+            for (int i = 0; i < humanoids.Count; i++)
+            {
+                if (!humanoids[i].caught && humanoids[i].y < terrain.terrainContour[Math.Abs(terrain.bound + humanoids[i].x)] &&
+                    humanoids[i].container.Intersects(ship.desRect) && !humanoids[i].droppedByHumanoids)
+                {
+                    ship.addHumanoid(humanoids[i]);
+                }
             }
         }
 

@@ -49,7 +49,7 @@ namespace StarGate
         public int smartBombs = 3;
 
         //humanoids
-        public Humanoid humanoid;
+        public List<Humanoid> humanoids;
         Rectangle HumanoidCarryer.desRect
         {
             get
@@ -62,6 +62,7 @@ namespace StarGate
         {
             //textures
             this.tex = tex;
+            this.humanoids = new List<Humanoid>();
 
             this.projectileTex = projectileTex;
             projectileTex.SetData(new Color[] { Color.White });
@@ -88,7 +89,7 @@ namespace StarGate
 
         public void addHumanoid(Humanoid humanoid)
         {
-            this.humanoid = humanoid;
+            this.humanoids.Add(humanoid);
             humanoid.setCarryer(this);
         }
 
@@ -101,10 +102,15 @@ namespace StarGate
                 isRight = !isRight;
             }
 
-            if (humanoid != null && newPad.Buttons.B == ButtonState.Pressed)
+            if (humanoids.Count != 0 && newPad.Buttons.B == ButtonState.Pressed)
             {
-                humanoid.setCarryer(null);
-                humanoid = null;
+                for (int i = 0; i < humanoids.Count; i++)
+                {
+                    humanoids[i].setCarryer(null);
+                    humanoids[i].droppedByHumanoids = true;
+                    humanoids.RemoveAt(i);
+                    i--;
+                }
             }
 
             //thrust
