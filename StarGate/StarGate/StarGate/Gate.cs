@@ -12,7 +12,7 @@ using StarGate.Enemies;
 
 namespace StarGate
 {
-    class Gate
+    public class Gate
     {
         public Texture2D tex;
         public Rectangle desRect;

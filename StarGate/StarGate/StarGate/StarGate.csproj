@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Button.cs" />
     <Compile Include="deathPixel.cs" />
+    <Compile Include="EndingScreen.cs" />
     <Compile Include="Enemies\Bomber.cs" />
     <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="Enemies\Lander.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="HumanoidCarryer.cs" />
     <Compile Include="Humanoids.cs" />
     <Compile Include="MousePointer.cs" />
+    <Compile Include="PointsManager.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

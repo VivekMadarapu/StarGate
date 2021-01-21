@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 namespace StarGate
 {
   
-    class SpaceShip : HumanoidCarryer
+    public class SpaceShip : HumanoidCarryer
     {
         //textures
         public Texture2D tex;

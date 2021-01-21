@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace StarGate
 {
-    class Projectile
+    public class Projectile
     {
         //texture
         public Texture2D tex;

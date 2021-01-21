@@ -21,11 +21,12 @@ namespace StarGate
         SpriteBatch spriteBatch;
         private Terrain terrain;
 
-        TitleScreen titleScreen;
-        SettingsScreen settingsScreen;
-        GameScreen gameScreen;
+        public TitleScreen titleScreen;
+        public SettingsScreen settingsScreen;
+        public GameScreen gameScreen;
+        public EndingScreen endingScreen;
 
-        public static GameState gameState;
+        public GameState gameState;
         //user interface
         GamePadState oldPad;        
 
@@ -49,6 +50,7 @@ namespace StarGate
             titleScreen = new TitleScreen(graphics);
             settingsScreen = new SettingsScreen(titleScreen.mousePointer);
             gameScreen = new GameScreen();
+            endingScreen = new EndingScreen(GraphicsDevice, titleScreen.mousePointer);
 
             //user interface
             oldPad = GamePad.GetState(PlayerIndex.One);
@@ -66,10 +68,11 @@ namespace StarGate
 
             // TODO: use this.Content to load your game content here
            
-            titleScreen.loadTitleScreenImage(this);
+            TitleScreen.loadTitleScreenImage(this);
             MousePointer.loadPointerImage(this);
             Button.loadContent(this);
             LabelPrompt.loadSpriteFont(this);
+            PointsManager.loadScoreFont(this);
             gameScreen.initializeGameObjects(this);
 
         }
@@ -100,11 +103,14 @@ namespace StarGate
 
             // TODO: Add your update logic here
             if (gameState == GameState.START_SCREEN)
-                titleScreen.Update(graphics, newPad, oldPad);
+                titleScreen.Update(this, graphics, newPad, oldPad);
             else if (gameState == GameState.SETTINGS_SCREEN)
-                settingsScreen.Update(newPad, oldPad);
-            else if (gameState == GameState.GAME_SCREEN)
-                gameScreen.Update(GraphicsDevice, newPad, oldPad, gameTime.ElapsedGameTime.TotalSeconds);              
+                settingsScreen.Update(this, newPad, oldPad);
+            else // game screen
+            {
+                gameScreen.Update(this, GraphicsDevice, newPad, oldPad, gameTime.ElapsedGameTime.TotalSeconds);
+                if (gameState == GameState.END_SCREEN) endingScreen.Update(this, graphics, newPad, oldPad);
+            }
 
             oldPad = newPad;
             base.Update(gameTime);
@@ -124,10 +130,11 @@ namespace StarGate
                 titleScreen.Draw(spriteBatch);
             else if (gameState == GameState.SETTINGS_SCREEN)
                 settingsScreen.Draw(spriteBatch);
-            else if (gameState == GameState.GAME_SCREEN)
-                gameScreen.Draw(GraphicsDevice, spriteBatch);        
-
-
+            else // game screen
+            {
+                gameScreen.Draw(this, GraphicsDevice, spriteBatch);
+                if (gameState == GameState.END_SCREEN) endingScreen.Draw(spriteBatch, GraphicsDevice);
+            }
             spriteBatch.End();
 
 

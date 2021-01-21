@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace StarGate
 {
-    class Humanoid
+    public class Humanoid
     {
         public static Random random = new Random();
         public static Texture2D humanoidTex;
@@ -63,7 +63,7 @@ namespace StarGate
             humanoidTex = game.Content.Load<Texture2D>("Humanoids");
         }
 
-        public void Update(GraphicsDevice graphics, Terrain terrain, SpaceShip ship, GamePadState newPad)
+        public void Update(GraphicsDevice graphics, Terrain terrain, SpaceShip ship, GamePadState newPad, PointsManager pointsManager)
         {
             relationalUpdate(terrain, ship, newPad);
 
@@ -81,9 +81,12 @@ namespace StarGate
             }
             else
             {
-                droppedByHumanoids = false;
+                if (droppedByHumanoids) pointsManager.addPointsScored(500, x, y);
                 if (distanceFallen > 50) alive = false;
+                else if (!droppedByHumanoids && distanceFallen > 0 && alive) pointsManager.addPointsScored(250, x, y);
                 distanceFallen = 0;
+                droppedByHumanoids = false;
+
 
                 if (counter % 20 == 0)
                 {

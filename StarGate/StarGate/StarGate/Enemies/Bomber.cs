@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace StarGate.Enemies
 {
-    class Bomber : Enemy
+    public class Bomber : Enemy
     {
         public const int POINTS = 150;
         //texture

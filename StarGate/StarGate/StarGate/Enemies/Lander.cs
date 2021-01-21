@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 namespace StarGate.Enemies 
 {
 
-    class Lander : Enemy, HumanoidCarryer
+    public class Lander : Enemy, HumanoidCarryer
     {
         //use later for scoring
         public const int POINTS = 150;
@@ -22,7 +22,7 @@ namespace StarGate.Enemies
         //rectangle
         public Rectangle sourceRect;
         //public List<Rectangle> sourceRects;
-        public Rectangle desRect;
+        //public Rectangle desRect;
         int counter = 0;
     
         //speed/dimensions

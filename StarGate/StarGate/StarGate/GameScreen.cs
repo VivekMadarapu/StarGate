@@ -12,13 +12,11 @@ using StarGate.Enemies;
 
 namespace StarGate
 {
-    class GameScreen
+    public class GameScreen
     {
         public SpaceShip ship;
         public Terrain terrain;
         Gate gate;
-
-        Game game;
 
         //enemies
         public List<Enemy> enemies = new List<Enemy>();
@@ -33,12 +31,14 @@ namespace StarGate
         Boolean isLost = false;
 
         //score
-        public int score;
+        public PointsManager pointsManager;
 
 
         public void initializeGameObjects(Microsoft.Xna.Framework.Game game)
         {
-            this.game = game;
+
+           pointsManager = new PointsManager();
+
             ship = new SpaceShip(game.Content.Load<Texture2D>("starGateAllSprites"), 
                 800, 500, new Texture2D(game.GraphicsDevice, 1, 1));
 
@@ -56,7 +56,7 @@ namespace StarGate
             {
                 enemies.Add(new Lander(game,r));
             }
-            for(int i=0; i<15; i++)
+            for(int i=0; i<8; i++)
             {
                 enemies.Add(new Bomber(game, new Random(i*345)));
             }
@@ -70,16 +70,16 @@ namespace StarGate
            
         }
 
-        public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad, double gameTime)
+        public void Update(Game1 game, GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad, double gameTime)
         {
 
             if (!ship.isDead && isWon == false)
-            { 
+            {
 
-            ship.Update(oldPad, newPad, terrain);
-            terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);           
-            for (int i = 0; i < humanoids.Count; i++)
-                humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
+                ship.Update(oldPad, newPad, terrain);
+                terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
+                for (int i = 0; i < humanoids.Count; i++)
+                    humanoids[i].Update(graphicsDevice, terrain, ship, newPad, pointsManager);
                 //updating enemies
                 for (int i = 0; i < enemies.Count; i++)
                 {
@@ -133,7 +133,8 @@ namespace StarGate
                             {
 
 
-                                score += Lander.POINTS;
+                                //score += Lander.POINTS;
+                                pointsManager.addPointsScored(Lander.POINTS, l.desRect.X, l.desRect.Y);
 
                                 if (l.caughtHumanoid != null) l.caughtHumanoid.setCarryer(null);
                                 enemies.RemoveAt(r);
@@ -146,7 +147,8 @@ namespace StarGate
 
                             if (ship.projectileList[i].hits(b.desRect))
                             {
-                                score += Bomber.POINTS;
+                                //score += Bomber.POINTS;
+                                pointsManager.addPointsScored(Bomber.POINTS, b.desRect.X, b.desRect.Y);
                                 enemies.RemoveAt(r);
                                 r--;
                             }
@@ -156,7 +158,8 @@ namespace StarGate
                             Mutant m = (Mutant)(enemies[r]);
                             if (ship.projectileList[i].hits(m.desRect))
                             {
-                                score += Mutant.POINTS;
+                                //score += Mutant.POINTS;
+                                pointsManager.addPointsScored(Mutant.POINTS, m.desRect.X, m.desRect.Y);
                                 enemies.RemoveAt(r);
                                 r--;
                             }
@@ -171,6 +174,7 @@ namespace StarGate
                         humanoids[i].container.Intersects(ship.desRect) && !humanoids[i].droppedByHumanoids)
                     {
                         ship.addHumanoid(humanoids[i]);
+                        pointsManager.addPointsScored(500, ship.desRect.X, ship.desRect.Y);
                     }
                 }
                 //loss conditions
@@ -220,25 +224,35 @@ namespace StarGate
                 }
                 //win conditions
                 if (enemies.Count == 0)
-                    isWon = true; 
+                    isWon = true;
             }
             else if (ship.deathTimer > 0 && ship.isDead)
             {
+                if (ship.deathTimer < 400)
+                {
+                    game.gameState = GameState.END_SCREEN;
+                    game.endingScreen.score.text = "Score: " + pointsManager.score;
+                }
                 isLost = true;
                 while (ship.deathPixelCount < 40)
                     ship.updateDeath();
 
                 ship.updateDeath();
             }
-
-           
+            else
+            {
+                game.gameState = GameState.END_SCREEN;
+                if (!ship.isDead && !isLost) game.endingScreen.score.text = "You Won - Score: " + pointsManager.score;
+            }
 
             gate.Update(enemies, humanoids, terrain, ship, newPad);
+            pointsManager.Update(terrain, ship, newPad);
 
         }
 
-        public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
+        public void Draw(Game1 game, GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {
+            if (game.gameState != GameState.END_SCREEN) pointsManager.Draw(spriteBatch);
             ship.Draw(spriteBatch);
             terrain.Draw(spriteBatch, Color.White, graphicsDevice.Viewport.Width);
             if (!gate.used)

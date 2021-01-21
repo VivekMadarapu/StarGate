@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 namespace StarGate
 {
-    class deathPixel
+    public class deathPixel
     {
         public Rectangle pixelRect;
         public Texture2D pixelTexture;

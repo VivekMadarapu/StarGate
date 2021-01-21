@@ -11,10 +11,10 @@ using Microsoft.Xna.Framework.Media;
 
 namespace StarGate
 {
-    class TitleScreen
+    public class TitleScreen
     {
         public static int TITLESCREEN_SIZE = 500;
-        public Texture2D titleImage;
+        public static Texture2D titleImage;
         public Vector2 titleImageContainer;
         public Rectangle sourceRectangle;
         public MousePointer mousePointer;
@@ -28,26 +28,26 @@ namespace StarGate
             graphics.PreferredBackBufferWidth = TITLESCREEN_SIZE;
             graphics.PreferredBackBufferHeight = TITLESCREEN_SIZE;
             graphics.ApplyChanges();
-            mousePointer = new MousePointer(400, 400);
+            mousePointer = new MousePointer(400, 400, TITLESCREEN_SIZE, TITLESCREEN_SIZE);
             settingsButton = new Button(new Rectangle(100, 400, 100, 25), "Settings");
             startGameButton = new Button(new Rectangle(300, 400, 100, 25), "Play");
         } 
 
-        public void loadTitleScreenImage(Microsoft.Xna.Framework.Game game)
+        public static void loadTitleScreenImage(Microsoft.Xna.Framework.Game game)
         {
             titleImage = game.Content.Load<Texture2D>("starGateTitle");
         }
 
-        public void Update(GraphicsDeviceManager graphics, GamePadState gamePad, GamePadState oldPad)
+        public void Update(Game1 game, GraphicsDeviceManager graphics, GamePadState gamePad, GamePadState oldPad)
         {
             if (sourceRectangle.Width < titleImage.Width) sourceRectangle.Width++;
             mousePointer.Update(gamePad);
             settingsButton.Update((float)mousePointer.x, (float)mousePointer.y);
             startGameButton.Update((float)mousePointer.x, (float)mousePointer.y);
-            if (settingsButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed) Game1.gameState = GameState.SETTINGS_SCREEN;
+            if (settingsButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed) game.gameState = GameState.SETTINGS_SCREEN;
             if (startGameButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed)
             {
-                Game1.gameState = GameState.GAME_SCREEN;
+                game.gameState = GameState.GAME_SCREEN;
                 graphics.PreferredBackBufferWidth = 800;
                 graphics.PreferredBackBufferHeight = 500;
                 graphics.ApplyChanges();
@@ -65,7 +65,7 @@ namespace StarGate
 
     
 
-    class SettingsScreen
+    public class SettingsScreen
     {
         public static String controls =
             "Settings: \n\n" +
@@ -87,11 +87,11 @@ namespace StarGate
             this.mousePointer = mousePointer;
         }
 
-        public void Update(GamePadState gamePad, GamePadState oldPad)
+        public void Update(Game1 game, GamePadState gamePad, GamePadState oldPad)
         {
             mousePointer.Update(gamePad);
             backButton.Update((float)mousePointer.x, (float)mousePointer.y);
-            if (backButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed) Game1.gameState = GameState.START_SCREEN;
+            if (backButton.overLapping && gamePad.Buttons.A == ButtonState.Pressed) game.gameState = GameState.START_SCREEN;
         }
 
         public void Draw(SpriteBatch spriteBatch)

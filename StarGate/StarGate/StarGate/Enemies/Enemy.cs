@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace StarGate.Enemies
 {
-    class Enemy
+    public class Enemy
     {
         public Rectangle desRect;
         

@@ -14,7 +14,7 @@ using System.Text;
 
 namespace StarGate.Enemies
 {
-    class Mutant:Enemy
+    public class Mutant:Enemy
     {
 
         //use later for scoring

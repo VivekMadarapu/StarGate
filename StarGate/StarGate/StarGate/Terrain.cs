@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace StarGate
 {
-    class Terrain
+    public class Terrain
     {
         public int[] terrainContour;
         private Random random;

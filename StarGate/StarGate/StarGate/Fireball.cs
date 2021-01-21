@@ -9,7 +9,7 @@ using StarGate.Enemies;
 
 namespace StarGate
 {
-    class Fireball
+    public class Fireball
     {
         
         //texture

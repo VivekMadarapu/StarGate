@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace StarGate
 {
-    interface HumanoidCarryer
+    public interface HumanoidCarryer
     {
         Rectangle desRect
         {

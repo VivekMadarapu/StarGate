@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace StarGate
 {
-    class Button
+    public class Button
     {
         public static int PIXELS_PER_CHARACTER = 10;
         public static SpriteFont font;
@@ -55,7 +55,7 @@ namespace StarGate
     }
 
 
-    class LabelPrompt
+    public class LabelPrompt
     {
         public static SpriteFont font;
 
