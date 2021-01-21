@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -75,12 +75,11 @@ namespace StarGate
 
             if (!ship.isDead && isWon == false)
             { 
-                ship.Update(oldPad, newPad, terrain);
-                terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
 
-                for (int i = 0; i < humanoids.Count; i++)
-                    humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
-
+            ship.Update(oldPad, newPad, terrain);
+            terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);           
+            for (int i = 0; i < humanoids.Count; i++)
+                humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
                 //updating enemies
                 for (int i = 0; i < enemies.Count; i++)
                 {
@@ -174,7 +173,7 @@ namespace StarGate
                         ship.addHumanoid(humanoids[i]);
                     }
                 }
-
+                //loss conditions
                 //checks if spaceship dies from collision with alien
                 for (int i = 0; i < enemies.Count; i++)
                 {
@@ -219,32 +218,24 @@ namespace StarGate
                             ship.isDead = true;
                     }
                 }
-
-            
-
-            //check if spaceship catches humanoids
-            for (int i = 0; i < humanoids.Count; i++)
-            {
-                if (!humanoids[i].caught && humanoids[i].y < terrain.terrainContour[Math.Abs(terrain.bound + humanoids[i].x)] &&
-                    humanoids[i].container.Intersects(ship.desRect) && !humanoids[i].droppedByHumanoids)
-                {
-                    ship.addHumanoid(humanoids[i]);
-                }
+                //win conditions
+                if (enemies.Count == 0)
+                    isWon = true; 
             }
+            else if (ship.deathTimer > 0 && ship.isDead)
+            {
+                isLost = true;
+                while (ship.deathPixelCount < 40)
+                    ship.updateDeath();
+
+                ship.updateDeath();
+            }
+
+           
 
             gate.Update(enemies, humanoids, terrain, ship, newPad);
 
         }
-        else if(ship.deathTimer>0 && ship.isDead)
-         {
-               while(ship.deathPixelCount<40)
-                    ship.updateDeath();
-
-                ship.updateDeath();
-
-
-         }
-    }
 
         public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {

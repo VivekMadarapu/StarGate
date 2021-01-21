@@ -90,13 +90,15 @@ namespace StarGate.Enemies
      
             if (!hasHumanoid && !transform /*&& isOnScreen()*/)
             {
-                if (humanTarget == -1)
+                if (humanTarget == -1 || (landerSpeed.X==0 && landerSpeed.Y==0))
                 {
                     locateHumanoid(humanoids);
+                    landerSpeed = new Vector2(-1, 1);
                 }
                 else if (humanoids[humanTarget].caught || !(humanoids[humanTarget].alive))
                 {
                     humanTarget = -1;
+                    locateHumanoid(humanoids);
                 }
                 else
                 {
@@ -195,7 +197,7 @@ namespace StarGate.Enemies
         {
             double minDistance =  -1;
             int minIndex = -1;
-            if (humanoids.Count > 0 && !(humanoids[0].caught))
+            if (humanoids.Count > 0 && !(humanoids[0].caught) && humanoids[0].alive)
             {
                 minDistance = Math.Sqrt(Math.Pow(desRect.X - humanoids[0].x, 2) + Math.Pow(desRect.Y - humanoids[0].y, 2));
                 minIndex = 0;
@@ -205,7 +207,7 @@ namespace StarGate.Enemies
                 for (int i = 1; i < humanoids.Count; i++)
                 {
                     double temp = Math.Sqrt(Math.Pow(desRect.X - humanoids[i].x, 2) + Math.Pow(desRect.Y - humanoids[i].y, 2));
-                    if (temp < minDistance && !(humanoids[i].caught))
+                    if (temp < minDistance && !(humanoids[i].caught) && humanoids[i].alive)
                     {
                         minDistance = temp;
                         minIndex = i;
