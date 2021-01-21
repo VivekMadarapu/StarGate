@@ -16,11 +16,12 @@ namespace StarGate
     {
         SpaceShip ship;
         Terrain terrain;
+        Gate gate;
 
         Game game;
 
         //enemies
-        List<Enemy> enemies = new List<Enemy>();
+        public List<Enemy> enemies = new List<Enemy>();
         Type lander;
         Type bomber;
         Type mutant;
@@ -30,7 +31,7 @@ namespace StarGate
 
         //humanoids
         //Humanoid humanoid;
-        List<Humanoid> humanoids = new List<Humanoid>();
+        public List<Humanoid> humanoids = new List<Humanoid>();
        //winning losing conditions
         Boolean isWon = false;
         Boolean isLost = false;
@@ -47,6 +48,7 @@ namespace StarGate
 
             terrain = new Terrain(5000, 500, new Texture2D(game.GraphicsDevice, 1, 1));
             terrain.GenerateTerrain();
+            gate = new Gate(game.Content.Load<Texture2D>("Stargate"));
 
             //enemies
             lander = typeof(Lander);
@@ -80,6 +82,7 @@ namespace StarGate
         {
             ship.Update(oldPad, newPad, terrain);
             terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
+            gate.Update(this, terrain, ship, newPad);
             //lander.Update(humanoids,ship, newPad, terrain);
             //bomber.Update(gameTime, ship, newPad, terrain);
             //mutant.Update(ship, newPad, terrain);
@@ -187,6 +190,10 @@ namespace StarGate
         {
             ship.Draw(spriteBatch);
             terrain.Draw(spriteBatch, Color.White, graphicsDevice.Viewport.Width);
+            if (!gate.used)
+            {
+                gate.Draw(spriteBatch);
+            }
             //lander.Draw(spriteBatch);
             //bomber.Draw(spriteBatch);
             //mutant.Draw(spriteBatch);
