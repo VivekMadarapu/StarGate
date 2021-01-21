@@ -81,14 +81,7 @@ namespace StarGate
             for (int i = 0; i < humanoids.Count; i++)
                 humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
 
-            //updating enemies
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                ship.Update(oldPad, newPad, terrain);
-                terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
-
-                for (int i = 0; i < humanoids.Count; i++)
-                    humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
+          
 
                 //updating enemies
                 for (int i = 0; i < enemies.Count; i++)
@@ -183,7 +176,7 @@ namespace StarGate
                         ship.addHumanoid(humanoids[i]);
                     }
                 }
-
+                //loss conditions
                 //checks if spaceship dies from collision with alien
                 for (int i = 0; i < enemies.Count; i++)
                 {
@@ -194,11 +187,11 @@ namespace StarGate
                         if (ship.collidesWithShip(l.desRect))
                         {
                             ship.isDead = true;
-                            
+
                         }
                         if (ship.collidesWithProjectiles(l.projectileList))
                             ship.isDead = true;
-                       
+
                     }
                     else if (a.Equals(bomber))
                     {
@@ -207,15 +200,15 @@ namespace StarGate
                         {
                             ship.isDead = true;
                         }
-                        for(int n=0; n<b.fireballs.Count; n++)
+                        for (int n = 0; n < b.fireballs.Count; n++)
                         {
-                            if(ship.desRect.Contains(b.fireballs[n].desRect))
+                            if (ship.desRect.Contains(b.fireballs[n].desRect))
                             {
-                                ship.isDead =true;
+                                ship.isDead = true;
                                 break;
                             }
                         }
-                      
+
                     }
                     else if (a.Equals(mutant))
                     {
@@ -228,32 +221,26 @@ namespace StarGate
                             ship.isDead = true;
                     }
                 }
-
+                //win conditions
+                if (enemies.Count == 0)
+                    isWon = true; 
             }
-
-            //check if spaceship catches humanoids
-            for (int i = 0; i < humanoids.Count; i++)
+            else if (ship.deathTimer > 0 && ship.isDead)
             {
-                if (!humanoids[i].caught && humanoids[i].y < terrain.terrainContour[Math.Abs(terrain.bound + humanoids[i].x)] &&
-                    humanoids[i].container.Intersects(ship.desRect) && !humanoids[i].droppedByHumanoids)
-                {
-                    ship.addHumanoid(humanoids[i]);
-                }
-            }
-
-            gate.Update(enemies, humanoids, terrain, ship, newPad);
-
-        }
-        else if(ship.deathTimer>0 && ship.isDead)
-         {
-               while(ship.deathPixelCount<40)
+                isLost = true;
+                while (ship.deathPixelCount < 40)
                     ship.updateDeath();
 
                 ship.updateDeath();
 
 
-         }
-    }
+            }
+
+           
+
+            gate.Update(enemies, humanoids, terrain, ship, newPad);
+
+        }
 
         public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {

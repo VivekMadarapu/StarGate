@@ -126,7 +126,7 @@ namespace StarGate.Enemies
             if (desRect.Right >= screenW && speed.X>0)
                 speed.X *= -1;
             else if (desRect.Left <= 0 && speed.X<0)
-                speed.X *= -1; ;
+                speed.X *= -1; 
 
             if (desRect.Y >= screenH - desRect.Height  && speed.Y>0)
             {
@@ -136,7 +136,7 @@ namespace StarGate.Enemies
             else if (desRect.Y <= 0 && speed.Y<0)
             {
                 speed.Y *= -1;
-                desRect.Y = screenH - desRect.Height;
+                desRect.Y = 0;
             }
         }
         public void locateDefender(SpaceShip ship)
