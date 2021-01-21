@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -75,14 +75,11 @@ namespace StarGate
 
             if (!ship.isDead && isWon == false)
             { 
+
             ship.Update(oldPad, newPad, terrain);
-            terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
-            
+            terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);           
             for (int i = 0; i < humanoids.Count; i++)
                 humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
-
-          
-
                 //updating enemies
                 for (int i = 0; i < enemies.Count; i++)
                 {
@@ -232,8 +229,6 @@ namespace StarGate
                     ship.updateDeath();
 
                 ship.updateDeath();
-
-
             }
 
            

@@ -48,7 +48,7 @@ namespace StarGate
         public Boolean isOnScreen()
         {
             Boolean x = false;
-            if (pixelRect.X >= screenW - pixelRect.Width || pixelRect.X <= 0 || pixelRect.Y <= 0 || pixelRect.Y >= screenH-pixelRect.Width)
+            if (pixelRect.X >= screenW - pixelRect.Width || pixelRect.X <= 0 || pixelRect.Y <= 0 || pixelRect.Y >= screenH - pixelRect.Width)
                 x = false;
             else
                 x = true;
@@ -68,7 +68,7 @@ namespace StarGate
             //new Vector2(pixelTexture.Width / 2, pixelTexture.Height / 2), 0.2f,
             //SpriteEffects.None, 0);
             spriteBatch.Draw(pixelTexture, pixelRect, Color.White);
-        
+
         }
     }
 }
