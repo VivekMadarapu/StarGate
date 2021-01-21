@@ -78,123 +78,174 @@ namespace StarGate
 
         public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad, double gameTime)
         {
-            ship.Update(oldPad, newPad, terrain);
-            terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
-            //lander.Update(humanoids,ship, newPad, terrain);
-            //bomber.Update(gameTime, ship, newPad, terrain);
-            //mutant.Update(ship, newPad, terrain);
-            //humanoids
-            //humanoid.Update(graphicsDevice, terrain, ship, newPad);
-            for (int i = 0; i < humanoids.Count; i++)
-                humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
-
-            //updating enemies
-            for (int i = 0; i < enemies.Count; i++)
+            if (!ship.isDead && isWon == false)
             {
-                Type a = enemies[i].GetType();
-                if (a.Equals(lander))
-                {
-                    Lander l = (Lander)enemies[i];
-                    l.Update(humanoids, ship, newPad, terrain);
-                    if (l.transform == true)
-                    {
-                        for (int r = 0; r < humanoids.Count; r++)
-                        {
-                            if (humanoids[r].carryer == enemies[i])
-                                humanoids[r].alive = false;
-                        }
-                        enemies[i] = new Mutant(l.desRect, game);
-                    }
-                    else
-                    {
-                        enemies[i] = l;
+                ship.Update(oldPad, newPad, terrain);
+                terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
 
-                    }
+                for (int i = 0; i < humanoids.Count; i++)
+                    humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
 
-                }
-                else if (a.Equals(bomber))
+                //updating enemies
+                for (int i = 0; i < enemies.Count; i++)
                 {
-                    Bomber b = (Bomber)(enemies[i]);
-                    b.rand = new Random(b.desRect.X);
-                    b.Update(gameTime, ship, newPad, terrain);
-                    enemies[i] = b;
-                }
-                else if (a.Equals(mutant))
-                {
-                    Mutant m = (Mutant)(enemies[i]);
-                    m.Update(ship, newPad, terrain);
-                    enemies[i] = m;
-                }
-            }
-
-            //checking if shipProjectiles hit anything
-            for (int i = 0; i < ship.projectileList.Count; i++)
-            {
-                for (int r = 0; r < enemies.Count; r++)
-                {
-                    Type a = enemies[r].GetType();
+                    Type a = enemies[i].GetType();
                     if (a.Equals(lander))
                     {
-                        Lander l = (Lander)enemies[r];
-
-                        if (ship.projectileList[i].hits(l.desRect)) 
+                        Lander l = (Lander)enemies[i];
+                        l.Update(humanoids, ship, newPad, terrain);
+                        if (l.transform == true)
                         {
-
-                           
-                            score += Lander.POINTS;
-
-                            if (l.caughtHumanoid != null) l.caughtHumanoid.setCarryer(null);
-                            enemies.RemoveAt(r);
-                            r--;
+                            for (int r = 0; r < humanoids.Count; r++)
+                            {
+                                if (humanoids[r].carryer == enemies[i])
+                                    humanoids[r].alive = false;
+                            }
+                            enemies[i] = new Mutant(l.desRect, game);
                         }
+                        else
+                        {
+                            enemies[i] = l;
+
+                        }
+
                     }
                     else if (a.Equals(bomber))
                     {
-                        Bomber b = (Bomber)(enemies[r]);
-
-                        if (ship.projectileList[i].hits(b.desRect))
-                        {
-                            score += Bomber.POINTS;
-                            enemies.RemoveAt(r);
-                            r--;
-                        }
+                        Bomber b = (Bomber)(enemies[i]);
+                        b.rand = new Random(b.desRect.X);
+                        b.Update(gameTime, ship, newPad, terrain);
+                        enemies[i] = b;
                     }
                     else if (a.Equals(mutant))
                     {
-                        Mutant m = (Mutant)(enemies[r]);
-                        if (ship.projectileList[i].hits(m.desRect))
+                        Mutant m = (Mutant)(enemies[i]);
+                        m.Update(ship, newPad, terrain);
+                        enemies[i] = m;
+                    }
+                }
+
+                //checking if shipProjectiles hit anything
+                for (int i = 0; i < ship.projectileList.Count; i++)
+                {
+                    for (int r = 0; r < enemies.Count; r++)
+                    {
+                        Type a = enemies[r].GetType();
+                        if (a.Equals(lander))
                         {
-                            score += Mutant.POINTS;
-                            enemies.RemoveAt(r);
-                            r--;
+                            Lander l = (Lander)enemies[r];
+
+                            if (ship.projectileList[i].hits(l.desRect))
+                            {
+
+
+                                score += Lander.POINTS;
+
+                                if (l.caughtHumanoid != null) l.caughtHumanoid.setCarryer(null);
+                                enemies.RemoveAt(r);
+                                r--;
+                            }
+                        }
+                        else if (a.Equals(bomber))
+                        {
+                            Bomber b = (Bomber)(enemies[r]);
+
+                            if (ship.projectileList[i].hits(b.desRect))
+                            {
+                                score += Bomber.POINTS;
+                                enemies.RemoveAt(r);
+                                r--;
+                            }
+                        }
+                        else if (a.Equals(mutant))
+                        {
+                            Mutant m = (Mutant)(enemies[r]);
+                            if (ship.projectileList[i].hits(m.desRect))
+                            {
+                                score += Mutant.POINTS;
+                                enemies.RemoveAt(r);
+                                r--;
+                            }
                         }
                     }
                 }
-            }
 
-            //check if spaceship catches humanoids
-            for (int i = 0; i < humanoids.Count; i++)
-            {
-                if (!humanoids[i].caught && humanoids[i].y < terrain.terrainContour[Math.Abs(terrain.bound + humanoids[i].x)] &&
-                    humanoids[i].container.Intersects(ship.desRect) && !humanoids[i].droppedByHumanoids)
+                //check if spaceship catches humanoids
+                for (int i = 0; i < humanoids.Count; i++)
                 {
-                    ship.addHumanoid(humanoids[i]);
+                    if (!humanoids[i].caught && humanoids[i].y < terrain.terrainContour[Math.Abs(terrain.bound + humanoids[i].x)] &&
+                        humanoids[i].container.Intersects(ship.desRect) && !humanoids[i].droppedByHumanoids)
+                    {
+                        ship.addHumanoid(humanoids[i]);
+                    }
                 }
-            }
+
+                //checks if spaceship dies from collision with alien
+                for (int i = 0; i < enemies.Count; i++)
+                {
+                    Type a = enemies[i].GetType();
+                    if (a.Equals(lander))
+                    {
+                        Lander l = (Lander)(enemies[i]);
+                        if (ship.collidesWithShip(l.desRect))
+                        {
+                            ship.isDead = true;
+                            
+                        }
+                        if (ship.collidesWithProjectiles(l.projectileList))
+                            ship.isDead = true;
+                       
+                    }
+                    else if (a.Equals(bomber))
+                    {
+                        Bomber b = (Bomber)enemies[i];
+                        if (ship.collidesWithShip(b.desRect))
+                        {
+                            ship.isDead = true;
+                        }
+                        for(int n=0; n<b.fireballs.Count; n++)
+                        {
+                            if(ship.desRect.Contains(b.fireballs[n].desRect))
+                            {
+                                ship.isDead =true;
+                                break;
+                            }
+                        }
+                      
+                    }
+                    else if (a.Equals(mutant))
+                    {
+                        Mutant m = (Mutant)enemies[i];
+                        if (ship.collidesWithShip(m.desRect))
+                        {
+                            ship.isDead = true;
+                        }
+                        if (ship.collidesWithProjectiles(m.projectileList))
+                            ship.isDead = true;
+                    }
+                }
         }
+        else if(ship.deathTimer>0 && ship.isDead)
+         {
+               while(ship.deathPixelCount<40)
+                    ship.updateDeath();
+
+                ship.updateDeath();
+
+
+         }
+    }
 
         public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {
             ship.Draw(spriteBatch);
             terrain.Draw(spriteBatch, Color.White, graphicsDevice.Viewport.Width);
-            //lander.Draw(spriteBatch);
-            //bomber.Draw(spriteBatch);
-            //mutant.Draw(spriteBatch);
+
             //humanoids
-           /* humanoid.Draw(spriteBatch)*/;
+      
             for (int i = 0; i < humanoids.Count; i++)
                 humanoids[i].Draw(spriteBatch);
-            // humanoidTwo.Draw(spriteBatch);
+   
 
             //enemies
             for (int i = 0; i < enemies.Count; i++)

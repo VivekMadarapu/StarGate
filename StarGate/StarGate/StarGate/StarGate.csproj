@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Button.cs" />
+    <Compile Include="deathPixel.cs" />
     <Compile Include="Enemies\Bomber.cs" />
     <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="Enemies\Lander.cs" />

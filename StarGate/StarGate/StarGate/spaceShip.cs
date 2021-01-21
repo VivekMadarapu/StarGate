@@ -47,7 +47,13 @@ namespace StarGate
         public Boolean isCloaked;
 
         public int smartBombs = 3;
-
+        // dead
+        public Boolean isDead = false;
+        public int deathTimer = 600;
+        public List<deathPixel> deathPixels = new List<deathPixel>();
+        public int deathPixelCount = 0;
+        public float deathAngle = 100;
+     
         //humanoids
         public List<Humanoid> humanoids;
         Rectangle HumanoidCarryer.desRect
@@ -71,8 +77,8 @@ namespace StarGate
             this.screenH = screenH;
 
             //rectangles
-            sourceRecRight = new Rectangle((tex.Width / 29*2), (tex.Height / 2) / 10, tex.Width / 21, (tex.Height / 2) / 10);
-            sourceRecLeft = new Rectangle((tex.Width / 30 * 9), (tex.Height / 2) / 10, tex.Width / 21, (tex.Height / 2) / 10);
+            sourceRecRight = new Rectangle((tex.Width / 29*2), (tex.Height / 2) / 10, tex.Width / 21-1, (tex.Height / 2) / 12);
+            sourceRecLeft = new Rectangle((tex.Width / 30 * 9), (tex.Height / 2) / 10, tex.Width / 21, (tex.Height / 2) / 12);
             desRect = new Rectangle(395, rand.Next(0,screenH/2), 50, 30);
 
             //booleans
@@ -176,6 +182,30 @@ namespace StarGate
           
 
         }
+        public void updateDeath()
+        {
+    
+            
+            if(/*deathTimer>0 &&*/ deathPixelCount<50)
+            {
+                double multiplier = deathPixelCount / 600.0 * 700;
+                deathAngle = (float)((double)deathAngle + rand.NextDouble() * multiplier) % 360;
+                deathPixels.Add(new deathPixel(new Vector2(desRect.X, desRect.Y), MathHelper.ToRadians(deathAngle),projectileTex, screenW, screenH));
+                deathPixelCount++;
+            }
+            for (int i = 0; i < deathPixels.Count; i++)
+            {
+                deathPixels[i].Update();
+                if (deathPixels[i].isOnScreen() == false)
+                {
+                    deathPixels.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            deathTimer--;
+
+        }
         public void keepShipOnScreen()//keeps the spaceship from going off screen
         {
             if (desRect.Right >= screenW)
@@ -190,7 +220,20 @@ namespace StarGate
         }
         public Boolean collidesWithShip(Rectangle rect2)//checks if ship collides with anything
         {
-            return desRect.Intersects(rect2);
+            Rectangle r2 = new Rectangle(rect2.X + rect2.Width / 3, rect2.Y + rect2.Height / 3, rect2.Width / 2, rect2.Height / 2);
+            Rectangle r = new Rectangle(desRect.X, desRect.Y + desRect.Height / 2, desRect.Width, desRect.Height/2);
+            //return desRect.Intersects(rect2);
+            return rect2.Contains(desRect.X + desRect.Width / 2, desRect.Y + desRect.Height / 2);
+        }
+        public Boolean collidesWithProjectiles(List<Rectangle>fires)//checks to see if any projectiles hit the ship
+        {
+            for(int i=0; i<fires.Count; i++)
+            {
+                if (desRect.Contains(fires[i]))
+                    return true;
+            }
+
+            return false;
         }
         public void checkCloaking(GamePadState newPad)//manages cloaking device)
         {
@@ -215,6 +258,7 @@ namespace StarGate
                 //destroy enemies in visibility range and add points to scoring
             }
         }
+       
         
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -223,12 +267,29 @@ namespace StarGate
             {
                 projectileList[i].Draw(spriteBatch);
             }
-            
+
             //draw ship
-            if(!isRight)
-                spriteBatch.Draw(tex, desRect, sourceRecLeft, Color.White);
+            if (!isDead)
+            {
+                if (!isRight)
+                    spriteBatch.Draw(tex, desRect, sourceRecLeft, Color.White);
+                else
+                    spriteBatch.Draw(tex, desRect, sourceRecRight, Color.White);
+            }
             else
-                spriteBatch.Draw(tex, desRect, sourceRecRight, Color.White);
+            {
+              for(int i=0; i<deathPixels.Count; i++)
+                {
+                    deathPixels[i].Draw(spriteBatch);
+                }
+            }
+            //else if(deathTimer>0)
+            //{
+            //    for(int i=0; i<deathPixels.Count; i++)
+            //    {
+            //        spriteBatch.Draw(projectileTex, deathPixels[i], Color.White);
+            //    }
+            //}
 
         }
 

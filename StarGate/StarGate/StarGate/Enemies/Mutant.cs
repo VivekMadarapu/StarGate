@@ -123,15 +123,21 @@ namespace StarGate.Enemies
         }
         public void keepMutantOnScreen()
         {
-            if (desRect.Right >= screenW)
+            if (desRect.Right >= screenW && speed.X>0)
                 speed.X *= -1;
-            else if (desRect.Left <= 0)
+            else if (desRect.Left <= 0 && speed.X<0)
                 speed.X *= -1; ;
 
-            if (desRect.Y >= screenH-desRect.Height)
+            if (desRect.Y >= screenH - desRect.Height  && speed.Y>0)
+            {
                 speed.Y *= -1;
-            else if (desRect.Y <= 0)
+                desRect.Y = screenH - desRect.Height;
+            }
+            else if (desRect.Y <= 0 && speed.Y<0)
+            {
                 speed.Y *= -1;
+                desRect.Y = screenH - desRect.Height;
+            }
         }
         public void locateDefender(SpaceShip ship)
         {
