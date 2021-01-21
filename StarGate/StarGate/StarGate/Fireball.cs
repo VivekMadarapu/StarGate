@@ -45,8 +45,8 @@ namespace StarGate
             double relShipY = ship.desRect.Y - bomber.desRect.Y;
 
             double hyp = Math.Sqrt(Math.Pow(relShipX, 2) + Math.Pow(relShipY, 2));
-            dx = (float)(relShipX / hyp / 0.1);
-            dy = (float)(relShipY / hyp / 0.1);
+            dx = (float)(relShipX / hyp / 0.2);
+            dy = (float)(relShipY / hyp / 0.2);
         }
         
 
