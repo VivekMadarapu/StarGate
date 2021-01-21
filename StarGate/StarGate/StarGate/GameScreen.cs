@@ -14,8 +14,8 @@ namespace StarGate
 {
     class GameScreen
     {
-        SpaceShip ship;
-        Terrain terrain;
+        public SpaceShip ship;
+        public Terrain terrain;
         Gate gate;
 
         Game game;
@@ -82,7 +82,7 @@ namespace StarGate
         {
             ship.Update(oldPad, newPad, terrain);
             terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
-            gate.Update(this, terrain, ship, newPad);
+            
             //lander.Update(humanoids,ship, newPad, terrain);
             //bomber.Update(gameTime, ship, newPad, terrain);
             //mutant.Update(ship, newPad, terrain);
@@ -184,6 +184,9 @@ namespace StarGate
                     ship.addHumanoid(humanoids[i]);
                 }
             }
+
+            gate.Update(enemies, humanoids, terrain, ship, newPad);
+
         }
 
         public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
