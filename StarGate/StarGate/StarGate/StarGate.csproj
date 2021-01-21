@@ -73,6 +73,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="SpaceShip.cs" />
+    <Compile Include="Gate.cs" />
     <Compile Include="TitleScreen.cs" />
     <Compile Include="Terrain.cs" />
   </ItemGroup>

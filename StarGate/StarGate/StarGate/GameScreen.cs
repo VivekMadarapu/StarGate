@@ -14,23 +14,20 @@ namespace StarGate
 {
     class GameScreen
     {
-        SpaceShip ship;
-        Terrain terrain;
+        public SpaceShip ship;
+        public Terrain terrain;
+        Gate gate;
 
         Game game;
 
         //enemies
-        List<Enemy> enemies = new List<Enemy>();
+        public List<Enemy> enemies = new List<Enemy>();
         Type lander;
         Type bomber;
         Type mutant;
-        //Lander lander;
-        //Bomber bomber;
-        //Mutant mutant;
 
         //humanoids
-        //Humanoid humanoid;
-        List<Humanoid> humanoids = new List<Humanoid>();
+        public List<Humanoid> humanoids = new List<Humanoid>();
        //winning losing conditions
         Boolean isWon = false;
         Boolean isLost = false;
@@ -47,14 +44,13 @@ namespace StarGate
 
             terrain = new Terrain(5000, 500, new Texture2D(game.GraphicsDevice, 1, 1));
             terrain.GenerateTerrain();
+            gate = new Gate(game.Content.Load<Texture2D>("Stargate"));
 
             //enemies
             lander = typeof(Lander);
             bomber = typeof(Bomber);
             mutant = typeof(Mutant);
 
-            //bomber = new Bomber(game);
-            //mutant = new Mutant(new Rectangle(100,100,30,30), game);
             Random r = new Random();
             for(int i=0; i<10; i++)
             {
@@ -71,14 +67,22 @@ namespace StarGate
             {
                 humanoids.Add(new Humanoid(game.GraphicsDevice, terrain, null));
             }
-            //humanoid = new Humanoid(game.GraphicsDevice, terrain, ship);
-
-            //ship.addHumanoid(humanoid);
+           
         }
 
         public void Update(GraphicsDevice graphicsDevice, GamePadState newPad, GamePadState oldPad, double gameTime)
         {
+
             if (!ship.isDead && isWon == false)
+            { 
+            ship.Update(oldPad, newPad, terrain);
+            terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
+            
+            for (int i = 0; i < humanoids.Count; i++)
+                humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
+
+            //updating enemies
+            for (int i = 0; i < enemies.Count; i++)
             {
                 ship.Update(oldPad, newPad, terrain);
                 terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
@@ -224,6 +228,21 @@ namespace StarGate
                             ship.isDead = true;
                     }
                 }
+
+            }
+
+            //check if spaceship catches humanoids
+            for (int i = 0; i < humanoids.Count; i++)
+            {
+                if (!humanoids[i].caught && humanoids[i].y < terrain.terrainContour[Math.Abs(terrain.bound + humanoids[i].x)] &&
+                    humanoids[i].container.Intersects(ship.desRect) && !humanoids[i].droppedByHumanoids)
+                {
+                    ship.addHumanoid(humanoids[i]);
+                }
+            }
+
+            gate.Update(enemies, humanoids, terrain, ship, newPad);
+
         }
         else if(ship.deathTimer>0 && ship.isDead)
          {
@@ -240,13 +259,15 @@ namespace StarGate
         {
             ship.Draw(spriteBatch);
             terrain.Draw(spriteBatch, Color.White, graphicsDevice.Viewport.Width);
-
+            if (!gate.used)
+            {
+                gate.Draw(spriteBatch);
+            }
+    
             //humanoids
-      
             for (int i = 0; i < humanoids.Count; i++)
                 humanoids[i].Draw(spriteBatch);
-   
-
+  
             //enemies
             for (int i = 0; i < enemies.Count; i++)
             {

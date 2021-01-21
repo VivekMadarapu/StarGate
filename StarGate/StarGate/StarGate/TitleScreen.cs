@@ -83,7 +83,7 @@ namespace StarGate
         public SettingsScreen(MousePointer mousePointer)
         {
             settingsPrompt = new LabelPrompt(new Vector2(50, 100), controls);
-            backButton = new StarGate.Button(new Rectangle(370, 400, 100, 25), "Back");
+            backButton = new Button(new Rectangle(370, 400, 100, 25), "Back");
             this.mousePointer = mousePointer;
         }
 

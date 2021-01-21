@@ -19,7 +19,6 @@ namespace StarGate
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        SpaceShip ship;
         private Terrain terrain;
 
         TitleScreen titleScreen;
