@@ -52,46 +52,34 @@ namespace StarGate
             for (int i = 0; i < enemies.Count; i++)
             {
                 Type a = enemies[i].GetType();
-                
+
                 if (a.Equals(lander))
                 {
                     Lander l = (Lander)enemies[i];
-                    
+
                     if (l.desRect.X + 2500 >= 5000)
-                    {
                         l.desRect.X = l.desRect.X - 2500;
-                    }
                     else
-                    {
                         l.desRect.X = l.desRect.X + 2500;
-                    }
                     enemies[i] = l;
                 }
-            
+
                 else if (a.Equals(bomber))
                 {
                     Bomber l = (Bomber)(enemies[i]);
                     if (l.desRect.X + 2500 >= 5000)
-                    {
                         l.desRect.X = l.desRect.X - 2500;
-                    }
                     else
-                    {
                         l.desRect.X = l.desRect.X + 2500;
-                    }
                     enemies[i] = l;
                 }
                 else if (a.Equals(mutant))
                 {
                     Mutant l = (Mutant)(enemies[i]);
                     if (l.desRect.X + 2500 >= 5000)
-                    {
                         l.desRect.X = l.desRect.X - 2500;
-                    }
                     else
-                    {
                         l.desRect.X = l.desRect.X + 2500;
-                    }
                     enemies[i] = l;
                 }
             }

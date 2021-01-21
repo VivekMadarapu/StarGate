@@ -79,9 +79,7 @@ namespace StarGate.Enemies
                     speed.Y *= -1;
             }
             else
-            {
                 switchDirectionTime--;
-            }
 
             if (fireTimer <= 0 && isOnScreen())
             {
@@ -89,11 +87,15 @@ namespace StarGate.Enemies
                 fireTimer = 120;
             }
             
-
             for (int i = 0; i < fireballs.Count; i++)
             {
-                fireballs[i].Update(ship, newPad, terrain);
+                if (fireballs[i].desRect.Y > 510 || fireballs[i].desRect.Y < -10 || fireballs[i] == null)
+                    fireballs[i] = null;
+                else
+                    fireballs[i].Update(ship, newPad, terrain);
             }
+            while (fireballs.Contains(null))
+                fireballs.Remove(null);
 
             rotation += 0.2f;
             fireTimer--;
@@ -140,9 +142,7 @@ namespace StarGate.Enemies
         {
             spriteBatch.Draw(tex, desRect, null, Color.White, rotation, new Vector2(9, 9), SpriteEffects.None, 0);
             foreach (Fireball fireball in fireballs)
-            {
                 spriteBatch.Draw(fireballTex, fireball.desRect, Color.White);
-            }
         }
 
     }
