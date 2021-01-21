@@ -75,15 +75,6 @@ namespace StarGate
 
             if (!ship.isDead && isWon == false)
             { 
-            ship.Update(oldPad, newPad, terrain);
-            terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
-            
-            for (int i = 0; i < humanoids.Count; i++)
-                humanoids[i].Update(graphicsDevice, terrain, ship, newPad);
-
-            //updating enemies
-            for (int i = 0; i < enemies.Count; i++)
-            {
                 ship.Update(oldPad, newPad, terrain);
                 terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
 
@@ -194,11 +185,11 @@ namespace StarGate
                         if (ship.collidesWithShip(l.desRect))
                         {
                             ship.isDead = true;
-                            
+
                         }
                         if (ship.collidesWithProjectiles(l.projectileList))
                             ship.isDead = true;
-                       
+
                     }
                     else if (a.Equals(bomber))
                     {
@@ -207,15 +198,15 @@ namespace StarGate
                         {
                             ship.isDead = true;
                         }
-                        for(int n=0; n<b.fireballs.Count; n++)
+                        for (int n = 0; n < b.fireballs.Count; n++)
                         {
-                            if(ship.desRect.Contains(b.fireballs[n].desRect))
+                            if (ship.desRect.Contains(b.fireballs[n].desRect))
                             {
-                                ship.isDead =true;
+                                ship.isDead = true;
                                 break;
                             }
                         }
-                      
+
                     }
                     else if (a.Equals(mutant))
                     {
@@ -229,7 +220,7 @@ namespace StarGate
                     }
                 }
 
-            }
+            
 
             //check if spaceship catches humanoids
             for (int i = 0; i < humanoids.Count; i++)
