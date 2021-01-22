@@ -29,7 +29,7 @@ namespace StarGate
             graphics.PreferredBackBufferHeight = TITLESCREEN_SIZE;
             graphics.ApplyChanges();
             mousePointer = new MousePointer(400, 400, TITLESCREEN_SIZE, TITLESCREEN_SIZE);
-            settingsButton = new Button(new Rectangle(100, 400, 100, 25), "Settings");
+            settingsButton = new Button(new Rectangle(100, 400, 100, 25), "Controls");
             startGameButton = new Button(new Rectangle(300, 400, 100, 25), "Play");
         } 
 
@@ -68,19 +68,19 @@ namespace StarGate
     public class SettingsScreen
     {
         public static String controls =
-            "Settings: \n\n" +
+            "Controls/Rules: \n\n" +
             "Left Thumbstick - move up and down\n" +
             "Left Trigger - Thrust\n" +
             "X - Reverse\n" +
             "Y - Fire\n" +
             "B - Drop Humanoid\n\n" +
-            "Enemy Point Values:\n" +
+            "Point Values:\n" +
             "Lander 150\n" +
             "Bomber 150\n" +
-            "Bomber 150\n" +
+            "Mutant 150\n" +
             "Humanoid falls without dying 250\n" +
-            "Catching humanoid 500\n" +
-            "Returning ground 500\n";
+            "Catching Humanoid 500\n" +
+            "Returning Humanoid to Ground 500\n";
 
         public LabelPrompt settingsPrompt;
         public Button backButton;
