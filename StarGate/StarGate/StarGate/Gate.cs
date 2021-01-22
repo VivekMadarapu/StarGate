@@ -52,11 +52,9 @@ namespace StarGate
             for (int i = 0; i < enemies.Count; i++)
             {
                 Type a = enemies[i].GetType();
-
                 if (a.Equals(lander))
                 {
                     Lander l = (Lander)enemies[i];
-
                     if (l.desRect.X + 2500 >= 5000)
                         l.desRect.X = l.desRect.X - 2500;
                     else
@@ -88,13 +86,9 @@ namespace StarGate
             {
                 Humanoid h = (Humanoid)(humanoids[i]);
                 if (h.container.X + 2500 >= 5000)
-                {
                     h.container.X = h.container.X - 2500;
-                }
                 else
-                {
                     h.container.X = h.container.X + 2500;
-                }
                 humanoids[i] = h;
             }
         }
@@ -103,7 +97,6 @@ namespace StarGate
         {
             if (newPad.Triggers.Left != 0 && terrain.bound != 0 && terrain.bound != 4200)
             {
-
                 if (ship.isRight && ship.desRect.X == 400)
                 {
                     if (terrain.bound < 4200)

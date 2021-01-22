@@ -78,6 +78,7 @@ namespace StarGate
 
                 ship.Update(oldPad, newPad, terrain);
                 terrain.Update(newPad, ship, graphicsDevice.Viewport.Width);
+                gate.Update(enemies, humanoids, terrain, ship, newPad);
                 for (int i = 0; i < humanoids.Count; i++)
                     humanoids[i].Update(graphicsDevice, terrain, ship, newPad, pointsManager);
                 //updating enemies
@@ -245,7 +246,6 @@ namespace StarGate
                 if (!ship.isDead && !isLost) game.endingScreen.score.text = "You Won - Score: " + pointsManager.score;
             }
 
-            gate.Update(enemies, humanoids, terrain, ship, newPad);
             pointsManager.Update(terrain, ship, newPad);
 
         }
