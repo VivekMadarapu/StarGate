@@ -73,8 +73,14 @@ namespace StarGate
             "Left Trigger - Thrust\n" +
             "X - Reverse\n" +
             "Y - Fire\n" +
-            "A - Inviso Cloaking Device\n" +
-            "B - Smart Bombs";
+            "B - Drop Humanoid\n\n" +
+            "Enemy Point Values:\n" +
+            "Lander 150\n" +
+            "Bomber 150\n" +
+            "Bomber 150\n" +
+            "Humanoid falls without dying 250\n" +
+            "Catching humanoid 500\n" +
+            "Returning ground 500\n";
 
         public LabelPrompt settingsPrompt;
         public Button backButton;
